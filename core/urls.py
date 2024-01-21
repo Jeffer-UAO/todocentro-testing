@@ -1,6 +1,5 @@
 
 from django.contrib import admin
-from .views import DomainApiViewSet
 from django.urls import path, include
 
 from drf_yasg.views import get_schema_view
@@ -21,6 +20,7 @@ from accounts.api.router import router_user
 from carts.api.router import router_cart
 from stores.api.router import router_order
 from company.api.router import router_company
+from public.api.router import route_domain
 
 #from favorite.api.router import router_favorite
 #from stores.api.router import router_categoryproduct
@@ -49,8 +49,8 @@ urlpatterns = [
          cache_timeout=0), name='schema-redoc'),
 
 
-    path('customer_domains/', DomainApiViewSet, name='customer_domains_api'),
     path('api/', include('accounts.api.router')),
+    path('api/', include(route_domain.urls)),
     path('api/', include(router_category.urls)),
     path('api/', include(router_out.urls)),
     path('api/', include(router_stock.urls)),
