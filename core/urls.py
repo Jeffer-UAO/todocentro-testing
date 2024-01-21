@@ -1,5 +1,6 @@
 
 from django.contrib import admin
+from .views import DomainApiViewSet
 from django.urls import path, include
 
 from drf_yasg.views import get_schema_view
@@ -48,6 +49,7 @@ urlpatterns = [
          cache_timeout=0), name='schema-redoc'),
 
 
+    path('customer_domains/', DomainApiViewSet, name='customer_domains_api'),
     path('api/', include('accounts.api.router')),
     path('api/', include(router_category.urls)),
     path('api/', include(router_out.urls)),
