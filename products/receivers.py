@@ -7,6 +7,7 @@ from customers.models import Product_public
 
 @receiver(post_save, sender=Product)
 def sync_producto(sender, instance, created, **kwargs):
+    print("Signal activada.")
     if created:
         try:
             product_public = Product_public.objects.get(codigo=instance.codigo)
