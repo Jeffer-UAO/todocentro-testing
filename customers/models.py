@@ -44,3 +44,49 @@ class Client(TenantMixin):
 
 class Domain(DomainMixin):
     pass
+
+
+class Product_public(models.Model):
+    codigo = models.CharField(
+        max_length=50, verbose_name=("Código")
+    )
+    name_extend = models.CharField(
+        max_length=200, unique=True, verbose_name=("Nombre Producto")
+    )
+    images =  models.CharField(
+        max_length=600, null=True, default="", blank=True, verbose_name=("Imagen")
+    )
+    image_alterna = models.CharField(
+        max_length=600, null=True, default="", blank=True, verbose_name=("Imagen Alterna")
+    )
+    description = models.TextField(
+        max_length=2000, blank=True, verbose_name=("Descripción el producto")
+    )
+    price1 = models.PositiveIntegerField(
+        blank=True, null=True, default=0, verbose_name=("Precio Detal")
+    )
+    price2 = models.PositiveIntegerField(
+        blank=True, null=True, default=0, verbose_name=("Precio por Mayor")
+    )
+    price_old = models.PositiveIntegerField(
+        blank=True, null=True, default=0, verbose_name=("Precio Anterior")
+    )
+    flag = models.CharField(
+        max_length=200, blank=True, null=True, default="", verbose_name=("Grupo")
+    )
+    ref = models.CharField(
+        max_length=200, blank=True, null=True, default="", verbose_name=("Referencia")
+    )   
+    slug = models.SlugField(max_length=200, unique=True, verbose_name=("Url"))
+    active = models.BooleanField(default=True, verbose_name=("Activo"))
+    soldout = models.BooleanField(default=False, verbose_name=("Agotado"))
+    offer = models.BooleanField(default=False, verbose_name=("Oferta"))
+    home = models.BooleanField(default=False, verbose_name=("Exclusivo"))
+    created_date = models.CharField(
+        max_length=20, blank=True, null=True, default="", verbose_name=("Creado")
+    )
+    modified_date = models.CharField(
+        max_length=20, blank=True, null=True, default="", verbose_name=("Modificado")
+    )
+
+ 
