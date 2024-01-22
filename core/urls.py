@@ -20,7 +20,7 @@ from accounts.api.router import router_user
 from carts.api.router import router_cart
 from stores.api.router import router_order
 from company.api.router import router_company
-from public.api.router import route_domain
+from customers.api.router import route_domain
 
 #from favorite.api.router import router_favorite
 #from stores.api.router import router_categoryproduct
