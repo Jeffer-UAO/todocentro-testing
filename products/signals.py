@@ -10,8 +10,6 @@ from django.db import transaction
 def sync_producto(sender, instance, **kwargs):  
     try:              
         tenant_name = connection.tenant.schema_name
-        print(f"Inquilino: {tenant_name}")
-
         with transaction.atomic():
             product_public, created = Product_public.objects.get_or_create(codigo=instance.codigo,
                 defaults={
@@ -60,14 +58,13 @@ def sync_producto(sender, instance, **kwargs):
         print(f"Error inesperado al sincronizar el producto: {e}")
 
 
-
 # # Señal para manejar la eliminación de Producto
-# @receiver(pre_delete, sender=Producto)
-# def delete_copia_producto(sender, instance, **kwargs):
+# @receiver(pre_delete, sender=Product)
+# def delete_product(sender, instance, **kwargs):
 #     try:
-#         copia_producto = CopiaProducto.objects.get(pk=instance.pk)
-#         copia_producto.delete()
-#     except CopiaProducto.DoesNotExist:
+#         product_public = Product_public.objects.get(id=instance.id)
+#         product_public.delete()
+#     except Product_public.DoesNotExist:
 #         pass  # No hay nada que eliminar
 #     except Exception as e:
 #         print(f"Error en la señal pre_delete: {e}")

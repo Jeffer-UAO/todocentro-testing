@@ -1,5 +1,6 @@
 from django.db import models
 from django_tenants.models import TenantMixin, DomainMixin
+import uuid
 
 
 class Customer(models.Model):
@@ -47,6 +48,8 @@ class Domain(DomainMixin):
 
 
 class Product_public(models.Model):
+    item = models.CharField(unique=True, max_length=32, verbose_name=("Item")
+    )
     codigo = models.CharField(
         max_length=50, verbose_name=("Código")
     )

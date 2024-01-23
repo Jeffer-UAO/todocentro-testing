@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.db import models
 from django.utils.text import slugify
 from django.urls import reverse
+import uuid
 # from simple_history.models import HistoricalRecords
 from cloudinary.models import CloudinaryField
 from django_tenants.utils import get_public_schema_name
@@ -12,6 +13,7 @@ global_schema_name = None
 
 
 class Product(models.Model):
+    itemId = models.UUIDField(editable=False, blank=True, null=True)
     codigo = models.CharField(
         max_length=50, primary_key=True, auto_created=True, verbose_name=("Código")
     )
@@ -61,9 +63,14 @@ class Product(models.Model):
     class Meta:
         verbose_name = "Producto"
         verbose_name_plural = "Productos"
+    
+    def save(self, *args, **kwargs):
+        if not self.item:
+            self.item = uuid.uuid4() if not self.codigo else None  # Generar UUID solo en la creación
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.name_extend} : cod:{self.codigo}"
+        return f"{self.name_extend}"
 
 class Category(models.Model):
     codigo = models.CharField(max_length=10, verbose_name=("Código"))
