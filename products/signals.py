@@ -1,4 +1,5 @@
 from django.db.models.signals import post_save, pre_delete
+from django_tenants.utils import connection
 from django.dispatch import receiver
 from .models import Product
 from customers.models import Product_public
@@ -7,9 +8,10 @@ from django.db import transaction
 
 @receiver(post_save, sender=Product)
 def sync_producto(sender, instance, **kwargs):  
-    try:       
-        print(f"Sender: {sender}")  # Imprime el objeto sender
-        print(f"Contenido de kwargs: {kwargs}")
+    try:              
+        tenant_name = connection.tenant.schema_name
+        print("Inquilino: {tenant_name}")
+
         with transaction.atomic():
             product_public, created = Product_public.objects.get_or_create(codigo=instance.codigo,
                 defaults={
