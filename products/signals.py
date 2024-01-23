@@ -26,8 +26,7 @@ def sync_producto(sender, instance, **kwargs):
                 'offer' :  instance.offer,
                 'home' :  instance.home,
                 'created_date' :  instance.created_date,
-                'modified_date' :  instance.modified_date,
-                'domain': instance.domain,
+                'modified_date' :  instance.modified_date,              
                 }
             )
             product_public.name_extend = instance.name_extend
