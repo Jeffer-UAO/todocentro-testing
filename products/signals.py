@@ -10,7 +10,7 @@ from django.db import transaction
 def sync_producto(sender, instance, **kwargs):  
     try:              
         tenant_name = connection.tenant.schema_name
-        print("Inquilino: {tenant_name}")
+        print(f"Inquilino: {tenant_name}")
 
         with transaction.atomic():
             product_public, created = Product_public.objects.get_or_create(codigo=instance.codigo,
