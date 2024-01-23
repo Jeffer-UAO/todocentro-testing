@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from .models import Product
-from customers.models import Product_public, Domain
+from customers.models import Product_public
 from django.db import transaction
 
 
@@ -9,9 +9,26 @@ from django.db import transaction
 def sync_producto(sender, instance, **kwargs):  
     try:
         with transaction.atomic():
-            product_public, _ = Product_public.objects.get_or_create(codigo=instance.codigo)
-
-            # Actualizar los campos en cualquier caso (creación o actualización)
+            product_public, created = Product_public.objects.get_or_create(codigo=instance.codigo,
+                defaults={
+                'name_extend' : instance.name_extend,
+                'images' : instance.images,
+                'image_alterna' :  instance.image_alterna,
+                'description' :  instance.description,
+                'price1' :  instance.price1,
+                'price2' :  instance.price2,
+                'price_old' :  instance.price_old,
+                'flag' :  instance.flag,
+                'ref' :  instance.ref,
+                'slug' :  instance.slug,
+                'active' :  instance.active,
+                'soldout' :  instance.soldout,
+                'offer' :  instance.offer,
+                'home' :  instance.home,
+                'created_date' :  instance.created_date,
+                'modified_date' :  instance.modified_date,              
+                }
+            )
             product_public.name_extend = instance.name_extend
             product_public.images = instance.images
             product_public.image_alterna = instance.image_alterna
@@ -27,19 +44,14 @@ def sync_producto(sender, instance, **kwargs):
             product_public.offer = instance.offer
             product_public.home = instance.home
             product_public.created_date = instance.created_date
-            product_public.modified_date = instance.modified_date
-         
+            product_public.modified_date = instance.modified_date                    
             product_public.save()
-            if not kwargs['created']:  # Si se está editando el product
-                print('Se ha EDITADO un producto')
-            else:                       # Si se está creando uno nuevo
-                print('Se ha CREATDO un producto')
+            if created:
+                print("Registro creado con éxito.")
+            else:
+                print("Registro actualizado con éxito.")
     except Exception as e:
-        print("Error al sincronizar el producto")
-        raise e
-        
-    
-        # print(f"Error inesperado: {e}")
+        print(f"Error inesperado al sincronizar el producto: {e}")
 
 
 
