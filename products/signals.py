@@ -27,6 +27,7 @@ def sync_producto(sender, instance, **kwargs):
                 'home' :  instance.home,
                 'created_date' :  instance.created_date,
                 'modified_date' :  instance.modified_date,
+                'domain': instance.domain,
                 }
             )
             product_public.name_extend = instance.name_extend
@@ -44,7 +45,8 @@ def sync_producto(sender, instance, **kwargs):
             product_public.offer = instance.offer
             product_public.home = instance.home
             product_public.created_date = instance.created_date
-            product_public.modified_date = instance.modified_date              
+            product_public.modified_date = instance.modified_date
+            product_public.domain = instance.domain              
             product_public.save()
             if created:
                 print("Registro creado con éxito.")
