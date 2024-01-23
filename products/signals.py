@@ -47,9 +47,9 @@ def sync_producto(sender, instance, **kwargs):
             product_public.modified_date = instance.modified_date                    
             product_public.save()
             if created:
-                print("Registro creado con éxito.")
+                print("Registro creado con éxito. {sender}")
             else:
-                print("Registro actualizado con éxito.")
+                print("Registro actualizado con éxito.{sender}")
     except Exception as e:
         print(f"Error inesperado al sincronizar el producto: {e}")
 
