@@ -91,7 +91,11 @@ class Product_public(models.Model):
     modified_date = models.CharField(
         max_length=50, blank=True, null=True, default="", verbose_name=("Modificado")
     )
+    domain = models.CharField(max_length=255, blank=True, null=True)
    
+    def setTenant(self, tenant):
+        self.domain = tenant.schema_name
+        self.save()
 
    
 

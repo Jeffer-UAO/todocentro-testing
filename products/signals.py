@@ -1,8 +1,7 @@
 from django.db.models.signals import post_save, pre_delete
-
 from django.dispatch import receiver
 from .models import Product
-from customers.models import Product_public, Domain
+from customers.models import Product_public
 from django.db import transaction
 
 
@@ -11,7 +10,6 @@ def sync_producto(sender, instance, **kwargs):
     try:
         with transaction.atomic():
             product_public, created = Product_public.objects.get_or_create(codigo=instance.codigo,
-                domain = Domain.objects.filter(id=1),
                 defaults={
                 'name_extend' : instance.name_extend,
                 'images' : instance.images,
@@ -49,7 +47,7 @@ def sync_producto(sender, instance, **kwargs):
             product_public.modified_date = instance.modified_date                    
             product_public.save()
             if created:
-                print("Registro creado con éxito. {domain}")
+                print("Registro creado con éxito.")
             else:
                 print("Registro actualizado con éxito.")
     except Exception as e:
