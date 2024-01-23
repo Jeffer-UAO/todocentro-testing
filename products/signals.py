@@ -7,8 +7,9 @@ from django.db import transaction
 
 @receiver(post_save, sender=Product)
 def sync_producto(sender, instance, **kwargs):  
-    try:
-        print(f"Contenido de la instancia: {instance.__dict__}")
+    try:       
+        print(f"Sender: {sender}")  # Imprime el objeto sender
+        print(f"Contenido de kwargs: {kwargs}")
         with transaction.atomic():
             product_public, created = Product_public.objects.get_or_create(codigo=instance.codigo,
                 defaults={
