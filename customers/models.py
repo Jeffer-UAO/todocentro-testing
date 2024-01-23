@@ -88,5 +88,15 @@ class Product_public(models.Model):
     modified_date = models.CharField(
         max_length=50, blank=True, null=True, default="", verbose_name=("Modificado")
     )
+    domain = models.ForeignKey(
+        Domain, on_delete=models.CASCADE, verbose_name=("Dominio")
+    )
+
+    def save(self, *args, **kwargs):
+        # Asignar el ID del tenant antes de guardar
+        # Puedes acceder al ID del tenant desde la instancia de Product
+        self.domain = self.domain.id
+        
+        super().save(*args, **kwargs)
 
  
