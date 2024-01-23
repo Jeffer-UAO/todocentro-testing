@@ -6,55 +6,54 @@ from django.db import transaction
 
 
 @receiver(post_save, sender=Product)
-def sync_producto(sender, instance, created, **kwargs):    
-    if created:
-        try:
-            with transaction.atomic():
-                product_public = Product_public.objects.get(codigo=instance.codigo)             
-                product_public.name_extend = instance.name_extend
-                product_public.images = instance.images
-                product_public.image_alterna = instance.image_alterna
-                product_public.description = instance.description
-                product_public.price1 = instance.price1
-                product_public.price2 = instance.price2
-                product_public.price_old = instance.price_old
-                product_public.flag = instance.flag
-                product_public.ref = instance.ref
-                product_public.slug = instance.slug
-                product_public.active = instance.active
-                product_public.soldout = instance.soldout
-                product_public.offer = instance.offer
-                product_public.home = instance.homer
-                product_public.created_date = instance.created_date
-                product_public.modified_date = instance.modified_date              
-                product_public.save()
-        except Product_public.DoesNotExist:          
-            product_public = Product_public.objects.create(
-                codigo=instance.codigo,
-                name_extend=instance.name_extend,
-                images=instance.images,
-                image_alterna = instance.image_alterna,
-                description = instance.description,
-                price1 = instance.price1,
-                price2 = instance.price2,
-                price_old = instance.price_old,
-                flag = instance.flag,
-                ref = instance.ref,
-                slug = instance.slug,
-                active = instance.active,
-                soldout = instance.soldout,
-                offer = instance.offer,
-                home = instance.homer,
-                created_date = instance.created_date,
-                modified_date = instance.modified_date,
+def sync_producto(sender, instance, **kwargs):  
+    try:
+        with transaction.atomic():
+            product_public, created = Product_public.objects.get_or_create(codigo=instance.codigo,
+                defaults={
+                'name_extend' : instance.name_extend,
+                'images' : instance.images,
+                'image_alterna' :  instance.image_alterna,
+                'description' :  instance.description,
+                'price1' :  instance.price1,
+                'price2' :  instance.price2,
+                'price_old' :  instance.price_old,
+                'flag' :  instance.flag,
+                'ref' :  instance.ref,
+                'slug' :  instance.slug,
+                'active' :  instance.active,
+                'soldout' :  instance.soldout,
+                'offer' :  instance.offer,
+                'home' :  instance.home,
+                'created_date' :  instance.created_date,
+                'modified_date' :  instance.modified_date,
+                }
             )
-            print("Registro creado con éxito.")
-        except Exception as e:
-            print(f"Error inesperado: {e}")
-    else:
-        print("No se crearon registros porque la instancia ya existía.")
+            product_public.name_extend = instance.name_extend
+            product_public.images = instance.images
+            product_public.image_alterna = instance.image_alterna
+            product_public.description = instance.description
+            product_public.price1 = instance.price1
+            product_public.price2 = instance.price2
+            product_public.price_old = instance.price_old
+            product_public.flag = instance.flag
+            product_public.ref = instance.ref
+            product_public.slug = instance.slug
+            product_public.active = instance.active
+            product_public.soldout = instance.soldout
+            product_public.offer = instance.offer
+            product_public.home = instance.home
+            product_public.created_date = instance.created_date
+            product_public.modified_date = instance.modified_date              
+            product_public.save()
+            if created:
+                print("Registro creado con éxito.")
+            else:
+                print("Registro actualizado con éxito.")
+    except Exception as e:
+        print(f"Error inesperado: {e}")
 
-        
+
 
 # # Señal para manejar la eliminación de Producto
 # @receiver(pre_delete, sender=Producto)
