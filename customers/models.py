@@ -48,8 +48,7 @@ class Domain(DomainMixin):
 
 
 class Product_public(models.Model):
-    item = models.CharField(unique=True, max_length=32, verbose_name=("Item")
-    )
+    item = models.UUIDField(editable=False, blank=True, null=True)
     codigo = models.CharField(
         max_length=50, verbose_name=("Código")
     )
