@@ -8,6 +8,7 @@ from django.db import transaction
 @receiver(post_save, sender=Product)
 def sync_producto(sender, instance, **kwargs):  
     try:
+        print(f"Contenido de la instancia: {instance.__dict__}")
         with transaction.atomic():
             product_public, created = Product_public.objects.get_or_create(codigo=instance.codigo,
                 defaults={
@@ -47,9 +48,9 @@ def sync_producto(sender, instance, **kwargs):
             product_public.modified_date = instance.modified_date                    
             product_public.save()
             if created:
-                print("Registro creado con éxito. {sender}")
+                print("Registro creado con éxito.")
             else:
-                print("Registro actualizado con éxito.{sender}")
+                print("Registro actualizado con éxito.")
     except Exception as e:
         print(f"Error inesperado al sincronizar el producto: {e}")
 
