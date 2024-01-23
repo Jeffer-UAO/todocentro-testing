@@ -50,6 +50,9 @@ class Product_public(models.Model):
     codigo = models.CharField(
         max_length=50, verbose_name=("Código")
     )
+    domain = models.CharField(
+        max_length=5, null=True, default="", verbose_name=("Dominio")
+    )
     name_extend = models.CharField(
         max_length=200, unique=True, verbose_name=("Nombre Producto")
     )

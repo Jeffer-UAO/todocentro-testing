@@ -11,7 +11,7 @@ def sync_producto(sender, instance, **kwargs):
     try:
         with transaction.atomic():
             product_public, created = Product_public.objects.get_or_create(codigo=instance.codigo,
-                tenant = Domain.objects.filter(id=1),
+                domain = Domain.objects.filter(id=1),
                 defaults={
                 'name_extend' : instance.name_extend,
                 'images' : instance.images,
