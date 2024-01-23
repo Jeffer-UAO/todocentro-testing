@@ -83,10 +83,10 @@ class Product_public(models.Model):
     offer = models.BooleanField(default=False, verbose_name=("Oferta"))
     home = models.BooleanField(default=False, verbose_name=("Exclusivo"))
     created_date = models.CharField(
-        max_length=20, blank=True, null=True, default="", verbose_name=("Creado")
+        max_length=50, blank=True, null=True, default="", verbose_name=("Creado")
     )
     modified_date = models.CharField(
-        max_length=20, blank=True, null=True, default="", verbose_name=("Modificado")
+        max_length=50, blank=True, null=True, default="", verbose_name=("Modificado")
     )
 
  
