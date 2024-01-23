@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from .models import Product
-from customers.models import Product_public
+from customers.models import Product_public, Domain
 from django.db import transaction
 
 
@@ -28,7 +28,7 @@ def sync_producto(sender, instance, **kwargs):
             product_public.home = instance.home
             product_public.created_date = instance.created_date
             product_public.modified_date = instance.modified_date
-
+         
             product_public.save()
             if not kwargs['created']:  # Si se está editando el product
                 print('Se ha EDITADO un producto')

@@ -88,9 +88,7 @@ class Product_public(models.Model):
     modified_date = models.CharField(
         max_length=50, blank=True, null=True, default="", verbose_name=("Modificado")
     )
-    domain = models.ForeignKey(
-        Domain, on_delete=models.CASCADE, verbose_name=("Dominio")
-    )
+   
 
    
 
