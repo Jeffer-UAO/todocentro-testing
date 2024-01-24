@@ -8,7 +8,7 @@ class Ip(models.Model):
         ('ENTRADAS', 'E1')
     )
 
-    number = models.CharField(max_length=20, verbose_name=(u'No. Documento'))
+    number = models.CharField(editable=False, max_length=20, verbose_name=(u'No. Documento'))
     tipo = models.CharField(max_length=20, choices=TIPO)
 
     class Meta:
