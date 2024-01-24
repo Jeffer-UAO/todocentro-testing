@@ -13,7 +13,7 @@ def sync_producto(sender, instance, **kwargs):
         with transaction.atomic():
             product_public, created = Product_public.objects.get_or_create(codigo=instance.codigo,
                 defaults={
-                'item' : instance.itemId,
+                'item' : instance.item,
                 'name_extend' : instance.name_extend,
                 'images' : instance.images,
                 'image_alterna' :  instance.image_alterna,
@@ -33,7 +33,7 @@ def sync_producto(sender, instance, **kwargs):
                 'domain' : tenant_name,             
                 }
             )
-            product_public.name_extend = instance.itemId
+            product_public.name_extend = instance.item
             product_public.name_extend = instance.name_extend
             product_public.images = instance.images
             product_public.image_alterna = instance.image_alterna
