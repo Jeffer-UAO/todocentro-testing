@@ -13,7 +13,7 @@ global_schema_name = None
 
 
 class Product(models.Model):
-    itemId = models.UUIDField(editable=False, blank=True, null=True)
+    item = models.UUIDField(blank=True, null=True)
     codigo = models.CharField(
         max_length=50, primary_key=True, auto_created=True, verbose_name=("Código")
     )
