@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.db import models
+
 class Ip(models.Model):
     TIPO = (
         ('SALDOS INICIALES', 'EA'),
