@@ -66,7 +66,7 @@ class Product(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.item:
-            self.item = uuid.uuid4() if not self.codigo else None  # Generar UUID solo en la creación
+            self.item = uuid.uuid4()
         super().save(*args, **kwargs)
 
     def __str__(self):
