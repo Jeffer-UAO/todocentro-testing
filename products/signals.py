@@ -60,13 +60,13 @@ def sync_producto(sender, instance, **kwargs):
         print(f"Error inesperado al sincronizar el producto: {e}")
 
 
-# # Señal para manejar la eliminación de Producto
-# @receiver(pre_delete, sender=Product)
-# def delete_product(sender, instance, **kwargs):
-#     try:
-#         product_public = Product_public.objects.get(id=instance.id)
-#         product_public.delete()
-#     except Product_public.DoesNotExist:
-#         pass  # No hay nada que eliminar
-#     except Exception as e:
-#         print(f"Error en la señal pre_delete: {e}")
+# Señal para manejar la eliminación de Producto
+@receiver(pre_delete, sender=Product)
+def delete_product(sender, instance, **kwargs):
+    try:
+        product_public = Product_public.objects.get(item=instance.item)
+        product_public.delete()
+    except Product_public.DoesNotExist:
+        pass  # No hay nada que eliminar
+    except Exception as e:
+        print(f"Error en la señal pre_delete: {e}")
