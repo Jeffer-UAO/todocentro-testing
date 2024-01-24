@@ -44,6 +44,7 @@ TENANT_APPS = (
     'warehome',
     'stores',
     'company',
+    'ips',
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + \
