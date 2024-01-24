@@ -83,6 +83,8 @@ class Product_public(models.Model):
         max_length=200, blank=True, null=True, default="", verbose_name=("Referencia")
     )   
     slug = models.SlugField(max_length=200, unique=True, verbose_name=("Url"))
+    published_public = models.BooleanField(default=True, verbose_name=("Publicado"))
+    published = models.BooleanField(default=True, verbose_name=("Local"))
     active = models.BooleanField(default=True, verbose_name=("Activo"))
     soldout = models.BooleanField(default=False, verbose_name=("Agotado"))
     offer = models.BooleanField(default=False, verbose_name=("Oferta"))

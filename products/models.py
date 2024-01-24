@@ -107,6 +107,7 @@ class CategoryProduct(models.Model):
         Product, on_delete=models.CASCADE, verbose_name=("Producto")
     )
     active = models.BooleanField(default=True)
+    published = models.BooleanField(default=True, verbose_name=("Publicado"))
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=("Creado"))
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, verbose_name=("Categoría")
