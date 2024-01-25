@@ -58,4 +58,4 @@ class Ipdet(models.Model):
         return self.ip.pk
 
     def __str__(self):
-        return str(self.number)
+        return str(self.ip)
