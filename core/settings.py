@@ -44,6 +44,7 @@ TENANT_APPS = (
     'warehome',
     'stores',
     'company',
+    'custs',
     'ips',
 )
 
