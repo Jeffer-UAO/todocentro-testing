@@ -42,7 +42,7 @@ class Ip(models.Model):
 
 class Ipdet(models.Model):   
     tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
-    batch = models.PositiveSmallIntegerField(editable=False, default=0)
+    number = models.PositiveSmallIntegerField(editable=False, default=0)
     ip = models.ForeignKey(Ip, on_delete=models.CASCADE)     
     product = models.ForeignKey('products.Product', on_delete=models.PROTECT ,verbose_name="Nombre")
     qty = models.PositiveIntegerField(default=1, verbose_name=(u'Cantidad'))
