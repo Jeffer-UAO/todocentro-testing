@@ -1,7 +1,7 @@
 from django.db import transaction
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .models import Ipdet, Itemact
+from .models import Ip, Ipdet, Itemact
 
 
 
@@ -25,3 +25,14 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
     except Exception as e:
         # Manejar otras excepciones
         print(f"Error inesperado: {e}")
+
+
+@receiver(pre_save, sender=Ip)
+def set_tipo_on_creation(sender, instance, **kwargs):
+    # Si el objeto Ip está siendo creado (no existe en la base de datos)
+    if not instance.pk:
+        # Permitir la edición del campo tipo solo durante la creación
+        instance._meta.get_field('tipo').editable = True
+    else:
+        # Si el objeto ya existe, no permitir la edición del campo tipo
+        instance._meta.get_field('tipo').editable = False
