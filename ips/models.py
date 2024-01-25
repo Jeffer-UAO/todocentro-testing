@@ -41,6 +41,8 @@ class Ip(models.Model):
     
 
 class Ipdet(models.Model):   
+    tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
+    batch = models.PositiveSmallIntegerField(editable=False, default=0)
     ip = models.ForeignKey(Ip, on_delete=models.CASCADE)     
     product = models.ForeignKey('products.Product', on_delete=models.PROTECT ,verbose_name="Nombre")
     qty = models.PositiveIntegerField(default=1, verbose_name=(u'Cantidad'))
@@ -53,16 +55,23 @@ class Ipdet(models.Model):
     
     
     @property
-    def ip_number(self):
-        # Acceder al número de la Ip relacionada
-        return self.ip.pk
+    def ip_info(self):
+        # Acceder al tipo y número de la Ip relacionada
+        return {'tipo': self.ip.tipo, 'number': self.ip.number}
+    
+    def save(self, *args, **kwargs):
+        # Antes de guardar, establecer tipo y número basándose en la propiedad ip_info
+        ip_info = self.ip_info
+        self.tipo = ip_info['tipo']
+        self.number = ip_info['number']
+        super().save(*args, **kwargs)
     
     class Meta:
         verbose_name = "Detalle"
         verbose_name_plural = "Detalles"
 
     def __str__(self):
-        return str(self.ip)
+        return f"{self.ip} - {self.product}"
     
 
 
