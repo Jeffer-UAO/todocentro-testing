@@ -31,6 +31,41 @@ class Ip(models.Model):
             self.number = str(nuevo_numero)
 
         super(Ip, self).save(*args, **kwargs)
+    
+    class Meta:
+        verbose_name = "Entrada"
+        verbose_name_plural = "Entradas"
 
     def __str__(self):
         return f"{self.number} - {self.tipo}"
+    
+
+class Ipdet(models.Model):   
+    ip = models.ForeignKey(Ip, on_delete=models.CASCADE)
+    number = models.PositiveIntegerField(verbose_name=(u'Numero'))
+    tipo = models.CharField(max_length=3, verbose_name=(u'Tipo'))   
+    # product = models.ForeignKey('productos.Producto', on_delete=models.PROTECT
+    #                              ,verbose_name="Producto")
+    qty = models.PositiveIntegerField(default=1)
+    cost = models.DecimalField(max_digits=9, decimal_places
+                                 =2, blank=False, null=False, default= 0.0)
+    
+    comments = models.CharField(
+        max_length=100, blank=True, verbose_name=(u'Comentarios'))
+    
+    
+    @property
+    def ip_number(self):
+        # Acceder al número de la Ip relacionada
+        return self.ip.number
+
+    class Meta:
+        unique_together = ('ip',)  # Asegúrate de que sea único para cada Ip y Ipdet
+
+    class Meta:
+        verbose_name = 'Entrada'
+        verbose_name_plural = 'Entradas'
+    
+
+    def __str__(self):
+        return str(self.number)
