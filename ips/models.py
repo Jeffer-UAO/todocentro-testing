@@ -55,7 +55,7 @@ class Ipdet(models.Model):
     @property
     def ip_number(self):
         # Acceder al número de la Ip relacionada
-        return self.ip.number
+        return self.ip.pk
 
     def __str__(self):
         return str(self.number)
