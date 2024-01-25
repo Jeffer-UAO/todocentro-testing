@@ -42,8 +42,8 @@ class Ip(models.Model):
 
 class Ipdet(models.Model):   
     ip = models.ForeignKey(Ip, on_delete=models.CASCADE)
-    number = models.PositiveIntegerField(editable=False, verbose_name=(u'Numero'))
-    tipo = models.CharField(editable=False, max_length=3, verbose_name=(u'Tipo'))   
+    number = models.PositiveIntegerField(editable=False, blank=True, null=True, verbose_name=(u'Numero'))
+    tipo = models.CharField(editable=False, blank=True, null=True, max_length=3, verbose_name=(u'Tipo'))   
     # product = models.ForeignKey('productos.Producto', on_delete=models.PROTECT
     #                              ,verbose_name="Producto")
     qty = models.PositiveIntegerField(default=1)
