@@ -10,7 +10,3 @@ class IpdetInline(admin.TabularInline):
 @admin.register(Ip)
 class IpAdmin(admin.ModelAdmin):
     inlines = [IpdetInline]
-
-@admin.register(Ipdet)
-class IpdetAdmin(admin.ModelAdmin):
-    pass
