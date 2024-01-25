@@ -15,8 +15,8 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
             else:
                 # Si se está actualizando un Ipdet, actualiza el Itemact correspondiente
                 itemact = Itemact.objects.select_for_update().get(ipdet=instance)
-                itemact.qty = instance.qty,
-                itemact.tipo = instance.tipo,
+                itemact.qty = instance.qty
+                itemact.tipo = instance.tipo
                 itemact.number = instance.number
                 itemact.save()
     except Itemact.DoesNotExist:

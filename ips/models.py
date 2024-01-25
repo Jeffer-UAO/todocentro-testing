@@ -81,7 +81,6 @@ class Itemact(models.Model):
     tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
     number = models.PositiveSmallIntegerField(editable=False, default=0)
     
-                            
     
     def __str__(self):
         return str(self.ipdet)
