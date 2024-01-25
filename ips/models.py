@@ -42,20 +42,24 @@ class Ip(models.Model):
 
 class Ipdet(models.Model):   
     ip = models.ForeignKey(Ip, on_delete=models.CASCADE)     
-    # product = models.ForeignKey('productos.Producto', on_delete=models.PROTECT
-    #                              ,verbose_name="Producto")
-    qty = models.PositiveIntegerField(default=1)
+    product = models.ForeignKey('products.Product', on_delete=models.PROTECT ,verbose_name="Nombre")
+    qty = models.PositiveIntegerField(default=1, verbose_name=(u'Cantidad'))
     cost = models.DecimalField(max_digits=9, decimal_places
-                                 =2, blank=False, null=False, default= 0.0)
-    
+                                 =2, blank=False, null=False, default= 0.0, verbose_name=(u'Costo'))
+    subtotal = models.DecimalField(max_digits=9, decimal_places
+                                 =2, blank=False, null=False, default= 0.0, verbose_name=(u'SubTotal'))
     comments = models.CharField(
-        max_length=100, blank=True, verbose_name=(u'Comentarios'))
+        max_length=100, blank=True, verbose_name=(u'Comentario'))
     
     
     @property
     def ip_number(self):
         # Acceder al número de la Ip relacionada
         return self.ip.pk
+    
+    class Meta:
+        verbose_name = "Detalle"
+        verbose_name_plural = "Detalles"
 
     def __str__(self):
         return str(self.ip)
