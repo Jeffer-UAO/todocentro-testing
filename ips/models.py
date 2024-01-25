@@ -7,8 +7,8 @@ class Ip(models.Model):
         ('ENTRADA', 'E1')
     )
 
-    number = models.CharField(max_length=20, verbose_name=(u'No. Documento'))
-    tipo = models.CharField(editable=False, max_length=20, choices=TIPO)
+    number = models.CharField(editable=True, max_length=20, verbose_name=(u'No. Documento'))
+    tipo = models.CharField(max_length=20, choices=TIPO)
     # cust = models.ForeignKey('custs.Tercero', on_delete=models.PROTECT, verbose_name=("Proveedor"))
     concept = models.CharField(max_length=80, verbose_name='Concepto', null=True, blank=True)
     total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
