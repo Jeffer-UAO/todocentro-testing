@@ -63,3 +63,13 @@ class Ipdet(models.Model):
 
     def __str__(self):
         return str(self.ip)
+    
+
+
+
+class Itemact(models.Model):   
+    ipdet = models.ForeignKey(Ipdet, on_delete=models.CASCADE)        
+    qty = models.PositiveIntegerField(default=0, verbose_name=(u'Cantidad'))
+    
+    def __str__(self):
+        return str(self.ipdet)
