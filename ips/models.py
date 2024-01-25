@@ -46,8 +46,7 @@ class Ipdet(models.Model):
     ip = models.ForeignKey(Ip, on_delete=models.CASCADE)     
     product = models.ForeignKey('products.Product', on_delete=models.PROTECT ,verbose_name="Nombre")
     qty = models.PositiveIntegerField(default=1, verbose_name=(u'Cantidad'))
-    cost = models.DecimalField(max_digits=9, decimal_places
-                                 =2, blank=False, null=False, default= 0.0, verbose_name=(u'Costo'))
+    cost = models.DecimalField(max_digits=9, decimal_places=2, blank=False, null=False, default= 0.0, verbose_name=(u'Costo'))
     subtotal = models.DecimalField(max_digits=9, decimal_places
                                  =2, blank=False, null=False, default= 0.0, verbose_name=(u'SubTotal'))
     comments = models.CharField(
@@ -79,6 +78,10 @@ class Ipdet(models.Model):
 class Itemact(models.Model):   
     ipdet = models.ForeignKey(Ipdet, on_delete=models.CASCADE)        
     qty = models.PositiveIntegerField(default=0, verbose_name=(u'Cantidad'))
+    tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
+    number = models.PositiveSmallIntegerField(editable=False, default=0)
+    
+                            
     
     def __str__(self):
         return str(self.ipdet)
