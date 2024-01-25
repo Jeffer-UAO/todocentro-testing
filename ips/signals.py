@@ -25,14 +25,3 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
     except Exception as e:
         # Manejar otras excepciones
         print(f"Error inesperado: {e}")
-
-
-@receiver(pre_save, sender=Ip)
-def set_tipo_on_creation(sender, instance, **kwargs):
-    # Si el objeto Ip está siendo creado (no existe en la base de datos)
-    if not instance.pk:
-        # Permitir la edición del campo tipo solo durante la creación
-        instance._meta.get_field('tipo').editable = True
-    else:
-        # Si el objeto ya existe, no permitir la edición del campo tipo
-        instance._meta.get_field('tipo').editable = False
