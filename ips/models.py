@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Sum
+
 
 
 class Ip(models.Model):
@@ -32,10 +32,7 @@ class Ip(models.Model):
                 nuevo_numero = int(ultimo_numero.number) + 1 if ultimo_numero else 1
 
                 # Actualizamos el campo 'number' con el nuevo número
-                self.number = str(nuevo_numero)
-
-                # Calculamos la sumatoria de los subtotales de los objetos relacionados de Ipdet
-                self.total = self.ipdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
+                self.number = str(nuevo_numero)               
 
             super(Ip, self).save(*args, **kwargs)
 

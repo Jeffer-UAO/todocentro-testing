@@ -1,6 +1,7 @@
 from django.db import transaction
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from django.db.models import Sum
 from .models import Ip, Ipdet, Itemact
 
 
@@ -19,6 +20,12 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
                 itemact.tipo = instance.tipo
                 itemact.number = instance.number
                 itemact.save()
+            
+            # Actualizar el campo total en el modelo Ip después de guardar un Ipdet
+            ip = instance.ip
+            ip.total = ip.ipdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
+            ip.save()
+
     except Itemact.DoesNotExist:
         # Manejar la excepción si el Itemact no existe
         print(f"Error: No se encontró un Itemact para el Ipdet {instance}")
