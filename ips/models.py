@@ -40,7 +40,7 @@ class Ip(models.Model):
             return f"No se pudo guardar la entrada. Error: {str(e)}"
     
     def __str__(self):
-        return f"{self.number} - {self.tipo}"
+        return f"{self.tipo} No. {self.number}"
     
 
 class Ipdet(models.Model):   
