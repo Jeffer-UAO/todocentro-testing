@@ -86,6 +86,9 @@ class Itemact(models.Model):
     number = models.PositiveIntegerField(editable=False, default=0)
     item = models.ForeignKey('products.Product', on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name = "Itemact"
+        verbose_name_plural = "Itemacts"
 
     def __str__(self):
         return str(self.ipdet)
@@ -97,3 +100,9 @@ class ItemactItem(models.Model):
     cantidad_actual = models.PositiveIntegerField(default=0)
     nombre = models.CharField(max_length=200, blank=True, null=True)
 
+    class Meta:
+        verbose_name = "Ítem de Activo"
+        verbose_name_plural = "Ítems de Activos"
+
+    def __str__(self):
+        return f"{self.item} - {self.nombre}"
