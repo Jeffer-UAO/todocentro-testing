@@ -86,7 +86,7 @@ class Itemact(models.Model):
     qty = models.PositiveSmallIntegerField(default=0)
     tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
     number = models.PositiveIntegerField(editable=False, default=0)
-    item = models.CharField(max_length=50, editable=False)
+    item = models.CharField(max_length=200, editable=False)
 
     def __str__(self):
         return str(self.ipdet)
