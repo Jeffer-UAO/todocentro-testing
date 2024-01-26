@@ -38,15 +38,25 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=Itemact)
 def actualizar_cantidades(sender, instance, **kwargs):
-    codigo_producto = instance.item.codigo
+    try:
+        with transaction.atomic():
+            # Obtener el código del producto relacionado con el movimiento
+            codigo_producto = instance.item.codigo
 
-    cantidad_actual = Itemact.objects.filter(item__codigo=codigo_producto).aggregate(
-        cantidad_actual=Sum('qty')
-    )['cantidad_actual']
+            # Calcular la cantidad actual utilizando agregación
+            cantidad_actual = Itemact.objects.filter(item__codigo=codigo_producto).aggregate(
+                cantidad_actual=Sum('qty')
+            )['cantidad_actual']
 
-    nombre_producto = instance.item.name_extend
+            # Obtener el nombre del producto
+            nombre_producto = instance.item.name_extend
 
-    ItemactItem.objects.update_or_create(
-        itemact_id=instance.id,
-        defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item}
-    )
+            # Actualizar o crear la instancia en ItemactItem
+            ItemactItem.objects.update_or_create(
+                itemact_id=instance.id,
+                defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item}
+            )
+
+    except Exception as e:
+        # Manejar cualquier excepción que pueda ocurrir durante la operación
+        print(f"Error inesperado: {e}")
