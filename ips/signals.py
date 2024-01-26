@@ -2,7 +2,7 @@ from django.db import transaction
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.db.models import Sum
-from .models import Ip, Ipdet, Itemact
+from .models import Ipdet, Itemact, ItemactItem
 
 
 
@@ -12,14 +12,13 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
         with transaction.atomic():
             if created:
                 # Si es un nuevo Ipdet, crea un nuevo Itemact
-                itemact = Itemact.objects.create(ipdet=instance, qty=instance.qty, tipo=instance.tipo, number=instance.number, item=instance.product)
+                itemact = Itemact.objects.create(ipdet=instance, qty=instance.qty, tipo=instance.tipo, number=instance.number)
             else:
                 # Si se está actualizando un Ipdet, actualiza el Itemact correspondiente
                 itemact = Itemact.objects.select_for_update().get(ipdet=instance)
                 itemact.qty = instance.qty
                 itemact.tipo = instance.tipo
-                itemact.number = instance.number
-                itemact.item = instance.product
+                itemact.number = instance.number              
                 itemact.save()
             
             # Actualizar el campo total en el modelo Ip después de guardar un Ipdet
@@ -33,3 +32,20 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
     except Exception as e:
         # Manejar otras excepciones
         print(f"Error inesperado: {e}")
+
+
+
+@receiver(post_save, sender=Itemact)
+def actualizar_cantidades(sender, instance, **kwargs):
+    codigo_producto = instance.item.codigo
+
+    cantidad_actual = Itemact.objects.filter(item__codigo=codigo_producto).aggregate(
+        cantidad_actual=Sum('qty')
+    )['cantidad_actual']
+
+    nombre_producto = instance.item.name_extend
+
+    ItemactItem.objects.update_or_create(
+        itemact_id=instance.id,
+        defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto}
+    )

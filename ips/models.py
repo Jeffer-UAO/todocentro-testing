@@ -48,7 +48,7 @@ class Ipdet(models.Model):
     tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
     number = models.PositiveIntegerField(editable=False, default=0)
     ip = models.ForeignKey(Ip, on_delete=models.CASCADE)     
-    product = models.ForeignKey('products.Product', on_delete=models.CASCADE ,verbose_name="Nombre")
+    item = models.ForeignKey('products.Product', on_delete=models.CASCADE ,verbose_name="Item")
     qty = models.PositiveSmallIntegerField(default=1, verbose_name=(u'Cantidad'))
     cost = models.DecimalField(max_digits=9, decimal_places=2, blank=False, null=False, default= 0.0, verbose_name=(u'Costo'))
     subtotal = models.DecimalField(max_digits=9, decimal_places
@@ -86,7 +86,14 @@ class Itemact(models.Model):
     qty = models.PositiveSmallIntegerField(default=0)
     tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
     number = models.PositiveIntegerField(editable=False, default=0)
-    item = models.CharField(max_length=50, editable=False)
+    item = models.ForeignKey('products.Product', on_delete=models.CASCADE)
+
 
     def __str__(self):
         return str(self.ipdet)
+
+
+class ItemactItem(models.Model):
+    itemact = models.OneToOneField(Itemact, on_delete=models.CASCADE, unique=True)
+    cantidad_actual = models.PositiveIntegerField(default=0)
+    nombre = models.CharField(max_length=200, blank=True, null=True)
