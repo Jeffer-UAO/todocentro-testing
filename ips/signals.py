@@ -1,5 +1,5 @@
 from django.db import transaction
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.db.models import Sum
 from .models import Ipdet, Itemact, ItemactItem
@@ -90,6 +90,36 @@ def actualizar_cantidades(sender, instance, **kwargs):
                 itemact_item.save()
                 # Imprimir otro mensaje si se actualiza correctamente
                 print(f"Cantidad actualizada de {nombre_producto} a {cantidad_actual} por el movimiento #{instance.pk}")    
+
+    except Exception as e:
+        # Manejar cualquier excepción que pueda ocurrir durante la operación
+        print(f"Error inesperado: {e}")
+
+
+
+@receiver(pre_delete, sender=Itemact)
+def restar_cantidades(sender, instance, **kwargs):
+    try:
+        with transaction.atomic():
+            # Obtener el código del producto relacionado con el movimiento
+            codigo_producto = instance.item.codigo
+
+            # Calcular la cantidad actual utilizando agregación
+            cantidad_actual = Itemact.objects.filter(item__codigo=codigo_producto).exclude(pk=instance.pk).aggregate(
+                cantidad_actual=Sum('qty')
+            )['cantidad_actual']
+
+            # Obtener el nombre del producto
+            nombre_producto = instance.item.name_extend
+
+            # Actualizar la instancia en ItemactItem
+            itemact_item, created = ItemactItem.objects.update_or_create(
+                item=instance.item,
+                defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto}
+            )
+
+            # Puedes imprimir un mensaje si se actualiza correctamente
+            print(f"Cantidad actualizada de {nombre_producto} a {cantidad_actual} por la eliminación del movimiento #{instance.pk}")
 
     except Exception as e:
         # Manejar cualquier excepción que pueda ocurrir durante la operación
