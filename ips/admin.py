@@ -5,7 +5,7 @@ from ips.models import Ip, Ipdet
 
 class IpdetInline(admin.TabularInline):
     model = Ipdet
-    # extra = 1  # Puedes ajustar esto según tus necesidades
+    extra = 1  # Puedes ajustar esto según tus necesidades
 
 
 class IpAdmin(admin.ModelAdmin):    
@@ -13,6 +13,6 @@ class IpAdmin(admin.ModelAdmin):
     list_display_links = ('tipo', 'number', 'total', 'created_date')
     search_fields = ('number','created_data',)
     inlines = [IpdetInline]    
-    list_per_page = 8
+    list_per_page = 6
     
 admin.site.register(Ip, IpAdmin)

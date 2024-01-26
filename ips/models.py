@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 
 
 class Ip(models.Model):
@@ -33,6 +34,9 @@ class Ip(models.Model):
                 # Actualizamos el campo 'number' con el nuevo número
                 self.number = str(nuevo_numero)
 
+                # Calculamos la sumatoria de los subtotales de los objetos relacionados de Ipdet
+                self.total = self.ipdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
+
             super(Ip, self).save(*args, **kwargs)
 
         except Exception as e:
@@ -66,6 +70,10 @@ class Ipdet(models.Model):
         ip_info = self.ip_info
         self.tipo = ip_info['tipo']
         self.number = ip_info['number']
+
+        # Calcular el subtotal al multiplicar el costo por la cantidad
+        self.subtotal = self.cost * self.qty
+        
         super().save(*args, **kwargs)
     
     class Meta:
