@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.db.models.functions import Coalesce
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.db.models import Sum
@@ -106,7 +107,7 @@ def restar_cantidades(sender, instance, **kwargs):
 
             # Calcular la cantidad actual utilizando agregación
             cantidad_actual = Itemact.objects.filter(item__codigo=codigo_producto).exclude(pk=instance.pk).aggregate(
-                cantidad_actual=(Sum('qty'), 0)
+                cantidad_actual=Coalesce(Sum('qty'), 0)
             )['cantidad_actual']
 
             # Obtener el nombre del producto
