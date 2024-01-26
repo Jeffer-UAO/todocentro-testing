@@ -8,7 +8,7 @@ class Ip(models.Model):
         ('ENTRADA', 'E1')
     )
 
-    number = models.CharField(editable=False, max_length=20, verbose_name=(u'No. Documento'))
+    number = models.PositiveIntegerField(editable=False, default=0, verbose_name=(u'No. Documento'))
     tipo = models.CharField(max_length=20, choices=TIPO)
     # cust = models.ForeignKey('custs.Tercero', on_delete=models.PROTECT, verbose_name=("Proveedor"))
     concept = models.CharField(max_length=80, verbose_name='Concepto', null=True, blank=True)
@@ -46,10 +46,10 @@ class Ip(models.Model):
 
 class Ipdet(models.Model):   
     tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
-    number = models.PositiveSmallIntegerField(editable=False, default=0)
+    number = models.PositiveIntegerField(editable=False, default=0)
     ip = models.ForeignKey(Ip, on_delete=models.CASCADE)     
     product = models.ForeignKey('products.Product', on_delete=models.CASCADE ,verbose_name="Nombre")
-    qty = models.PositiveIntegerField(default=1, verbose_name=(u'Cantidad'))
+    qty = models.PositiveSmallIntegerField(default=1, verbose_name=(u'Cantidad'))
     cost = models.DecimalField(max_digits=9, decimal_places=2, blank=False, null=False, default= 0.0, verbose_name=(u'Costo'))
     subtotal = models.DecimalField(max_digits=9, decimal_places
                                  =2, blank=False, null=False, default= 0.0, verbose_name=(u'SubTotal'))
@@ -79,15 +79,13 @@ class Ipdet(models.Model):
 
     def __str__(self):
         return f"{self.ip} - {self.product}"
-    
-
 
 
 class Itemact(models.Model):   
     ipdet = models.ForeignKey(Ipdet, on_delete=models.CASCADE)        
-    qty = models.PositiveIntegerField(default=0, verbose_name=(u'Cantidad'))
+    qty = models.PositiveSmallIntegerField(default=0)
     tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
-    number = models.PositiveSmallIntegerField(editable=False, default=0)
+    number = models.PositiveIntegerField(editable=False, default=0)
     
 
     def __str__(self):
