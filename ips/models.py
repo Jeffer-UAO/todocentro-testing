@@ -95,5 +95,6 @@ class Itemact(models.Model):
 
 class ItemactItem(models.Model):
     itemact = models.OneToOneField(Itemact, on_delete=models.CASCADE, unique=True)
+    item = models.ForeignKey('products.Product', on_delete=models.CASCADE, null=True, blank=True)
     cantidad_actual = models.PositiveIntegerField(default=0)
     nombre = models.CharField(max_length=200, blank=True, null=True)

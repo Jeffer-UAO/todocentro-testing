@@ -47,5 +47,5 @@ def actualizar_cantidades(sender, instance, **kwargs):
 
     ItemactItem.objects.update_or_create(
         itemact_id=instance.id,
-        defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto}
+        defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item}
     )
