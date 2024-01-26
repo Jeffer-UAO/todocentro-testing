@@ -12,13 +12,14 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
         with transaction.atomic():
             if created:
                 # Si es un nuevo Ipdet, crea un nuevo Itemact
-                itemact = Itemact.objects.create(ipdet=instance, qty=instance.qty, tipo=instance.tipo, number=instance.number)
+                itemact = Itemact.objects.create(ipdet=instance, qty=instance.qty, tipo=instance.tipo, number=instance.number, item=instance.product)
             else:
                 # Si se está actualizando un Ipdet, actualiza el Itemact correspondiente
                 itemact = Itemact.objects.select_for_update().get(ipdet=instance)
                 itemact.qty = instance.qty
                 itemact.tipo = instance.tipo
                 itemact.number = instance.number
+                itemact.item = instance.product
                 itemact.save()
             
             # Actualizar el campo total en el modelo Ip después de guardar un Ipdet
