@@ -84,6 +84,12 @@ def actualizar_cantidades(sender, instance, **kwargs):
             # Puedes imprimir un mensaje si se crea una nueva instancia
             if created:
                 print(f"ItemactItem creado con éxito para {nombre_producto}")
+            else:
+                # Si no es nuevo, actualizar la instancia existente
+                itemact_item.cantidad_actual = cantidad_actual
+                itemact_item.save()
+                # Imprimir otro mensaje si se actualiza correctamente
+                print(f"Cantidad actualizada de {nombre_producto} a {cantidad_actual} por el movimiento #{instance.pk}")    
 
     except Exception as e:
         # Manejar cualquier excepción que pueda ocurrir durante la operación
