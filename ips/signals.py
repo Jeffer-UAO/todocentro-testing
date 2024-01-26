@@ -19,7 +19,7 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
                 itemact.qty = instance.qty
                 itemact.tipo = instance.tipo
                 itemact.number = instance.number   
-                itemact.number = instance.item           
+                itemact.item = instance.item           
                 itemact.save()
             
             # Actualizar el campo total en el modelo Ip después de guardar un Ipdet
