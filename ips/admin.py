@@ -13,8 +13,9 @@ class IpAdmin(admin.ModelAdmin):
         actions = super(Ip, self).get_actions(request)
         return ['Tipo', 'Total']
     actions= None
-    list_display = ('tipo', 'number', 'total', 'created_date')
+    list_display_links = ('tipo', 'number', 'total', 'created_date')
     search_fields = ('number','created_data')
+    inlines = [IpdetInline]
     list_display_links = None
     list_per_page = 8
     
