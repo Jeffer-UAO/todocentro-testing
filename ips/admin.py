@@ -11,9 +11,8 @@ class IpdetInline(admin.TabularInline):
 class IpAdmin(admin.ModelAdmin):    
     actions= None
     list_display = ('tipo', 'number', 'total', 'created_date')
-    search_fields = ('number','created_data')
-    inlines = [IpdetInline]
-    list_display_links = None
+    search_fields = ('number','created_data',)
+    inlines = [IpdetInline]    
     list_per_page = 8
     
 admin.site.register(Ip, IpAdmin)
