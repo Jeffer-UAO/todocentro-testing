@@ -95,7 +95,7 @@ class Itemact(models.Model):
 
 
 class ItemactItem(models.Model):   
-    # item = models.ForeignKey('products.Product', on_delete=models.CASCADE, null=True, blank=True, default="")
+    item = models.ForeignKey('products.Product', on_delete=models.CASCADE, null=True, blank=True, default="")
     cantidad_actual = models.SmallIntegerField(default=0)
     nombre = models.CharField(max_length=200, blank=True, null=True)    
     codigo = models.CharField(max_length=50, default="")    
