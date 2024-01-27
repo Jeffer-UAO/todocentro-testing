@@ -73,15 +73,16 @@ def actualizar_cantidades(sender, instance, **kwargs):
                 cantidad_actual=Sum('qty')
             )['cantidad_actual']
 
-            # Obtener el nombre del producto
+            # Obtener el datos del producto
             nombre_producto = instance.item.name_extend
-            codigo = instance.item.codigo
+            uuid = instance.item.item
            
 
             # Actualizar o crear la instancia en ItemactItem
             itemact_item, created = ItemactItem.objects.update_or_create(
                 item=instance.item,
-                defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': codigo}
+                defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item, 
+                          'uuid': uuid}
             )
 
             # Puedes imprimir un mensaje si se crea una nueva instancia
