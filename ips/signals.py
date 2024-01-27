@@ -64,21 +64,21 @@ def actualizar_cantidades(sender, instance, **kwargs):
 
             # Obtener el datos del producto
             nombre_producto = instance.item.name_extend
-            uuid = instance.item.item 
+            item_uuid = instance.item.item 
             # Datos nuevos
-            images = instance.item.images
-            image_alterna = instance.item.image_alterna
-            description = instance.item.description
-            price1 = instance.item.price1
-            price2 = instance.item.price2
-            price_old = instance.item.price_old
-            flag = instance.item.flag
-            ref = instance.item.ref        
-            slug = instance.item.slug
-            active = instance.item.active
-            soldout = instance.item.soldout
-            offer = instance.item.offer
-            home =instance.item.home
+            # images = instance.item.images
+            # image_alterna = instance.item.image_alterna
+            # description = instance.item.description
+            # price1 = instance.item.price1
+            # price2 = instance.item.price2
+            # price_old = instance.item.price_old
+            # flag = instance.item.flag
+            # ref = instance.item.ref        
+            # slug = instance.item.slug
+            # active = instance.item.active
+            # soldout = instance.item.soldout
+            # offer = instance.item.offer
+            # home =instance.item.home
             print(f'instancia {instance.item.images}')
            
 
@@ -86,7 +86,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
             itemact_item, created = ItemactItem.objects.update_or_create(
                 item=instance.item,
                 defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item, 
-                          'uuid': uuid
+                          'uuid': item_uuid
                           } 
             )
             # Puedes imprimir un mensaje si se crea una nueva instancia
