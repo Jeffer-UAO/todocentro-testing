@@ -119,4 +119,4 @@ class ItemactItem(models.Model):
         verbose_name_plural = "Ítems de Activos"
 
     def __str__(self):
-        return f"{self.item} - {self.nombre}"
+        return f"{self.nombre} - Cantidad: {self.cantidad_actual}"
