@@ -71,7 +71,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
             price1 = getattr(instance.item, 'price1', 0)
             price2 = getattr(instance.item, 'price2', 0)
             price_old = getattr(instance.item, 'price_old', 0)
-            flag = getattr(instance.item, 'flag', 0)
+            flag = getattr(instance.item, 'flag', None)
             ref = getattr(instance.item, 'ref', None)        
             slug = getattr(instance.item, 'slug', None)
             active = getattr(instance.item, 'active', None)
