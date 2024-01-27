@@ -75,7 +75,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
 
             # Obtener el nombre del producto
             nombre_producto = instance.item.name_extend
-            # item = instance.item.item
+            item = instance.item.item
             flag = instance.item.flag
             images = instance.item.images
             ref = instance.item.ref
@@ -94,7 +94,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
             # Actualizar o crear la instancia en ItemactItem
             itemact_item, created = ItemactItem.objects.update_or_create(
                 item=instance.item,
-                defaults={'home': home,'offer': offer, 'soldout': soldout, 'ref': ref, 'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item,
+                defaults={'home': home,'offer': offer, 'soldout': soldout, 'ref': ref, 'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': item,
                           'flag': flag, 'images': images, 'description': description, 'price1': price1,
                           'price2': price2, 'price_old': price_old, 'active': active, 'image_alterna': image_alterna}
             )
