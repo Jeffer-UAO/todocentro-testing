@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.db.models import F
 from django.db.models.functions import Coalesce
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
@@ -108,22 +109,12 @@ def restar_cantidades(sender, instance, **kwargs):
             # Obtener el código del producto relacionado con el movimiento
             codigo_producto = instance.item.codigo
 
-            # Calcular la cantidad actual utilizando agregación
-            cantidad_actual = Itemact.objects.filter(item__codigo=codigo_producto).exclude(item__codigo=codigo_producto).aggregate(
-                cantidad_actual=Coalesce(Sum('qty'), 0)
-            )['cantidad_actual']
-            print(f'{codigo_producto}')
-            # Obtener el nombre del producto
-            nombre_producto = instance.item.name_extend
-
-            # Actualizar la instancia en ItemactItem
-            itemact_item, created = ItemactItem.objects.update_or_create(
-                item=instance.item,
-                defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto}
+            # Restar la cantidad actual en ItemactItem
+            ItemactItem.objects.filter(item__codigo=codigo_producto).update(
+                cantidad_actual=F('cantidad_actual') - instance.qty
             )
 
-            # Puedes imprimir un mensaje si se actualiza correctamente
-            print(f"Cantidad actualizada de {nombre_producto} a {cantidad_actual} por la eliminación del movimiento #{instance.pk}")
+            print(f"Cantidad actualizada después de eliminar el movimiento #{instance.pk}")
 
     except Exception as e:
         # Manejar cualquier excepción que pueda ocurrir durante la operación
