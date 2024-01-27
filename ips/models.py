@@ -95,7 +95,7 @@ class Itemact(models.Model):
 
 
 class ItemactItem(models.Model):   
-    item = models.ForeignKey('products.Product', on_delete=models.CASCADE, null=True, blank=True, default="")
+    # item = models.ForeignKey('products.Product', on_delete=models.CASCADE, null=True, blank=True, default="")
     cantidad_actual = models.SmallIntegerField(default=0)
     nombre = models.CharField(max_length=200, blank=True, null=True)    
     codigo = models.CharField(max_length=50, default="")    
@@ -106,8 +106,7 @@ class ItemactItem(models.Model):
     price2 = models.PositiveIntegerField(blank=True, null=True, default=0)
     price_old = models.PositiveIntegerField(blank=True, null=True, default=0)
     flag = models.CharField(max_length=200, blank=True, null=True, default="")
-    ref = models.CharField(max_length=200, blank=True, null=True, default="")
-    qty = models.BigIntegerField(blank=True, null=True)
+    ref = models.CharField(max_length=200, blank=True, null=True, default="")  
     # slug = models.SlugField(max_length=200)
     active = models.BooleanField(default=True)
     soldout = models.BooleanField(default=False)
@@ -119,4 +118,4 @@ class ItemactItem(models.Model):
         verbose_name_plural = "Ítems de Activos"
 
     def __str__(self):
-        return f"{self.item}"
+        return f"{self.nombre}"
