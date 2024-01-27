@@ -127,10 +127,7 @@ def restar_cantidades(sender, instance, **kwargs):
             nombre_producto = instance.item.name_extend
 
             # Actualizar la instancia en ItemactItem
-            itemact_item, created = ItemactItem.objects.update_or_create(
-                item=instance.item,
-                defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto}
-            )
+            itemact_item, created = ItemactItem.objects.update_or_create(item=instance.item,  defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto})
 
             # Puedes imprimir un mensaje si se actualiza correctamente
             print(f"Cantidad actualizada de {nombre_producto} a {cantidad_actual} por la eliminación del movimiento #{instance.pk}")
