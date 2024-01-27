@@ -1,4 +1,4 @@
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from django.db.models import F
 from django.db.models.functions import Coalesce
 from django.db.models.signals import post_save, pre_delete
@@ -11,10 +11,19 @@ from .models import Ipdet, Itemact, ItemactItem
 @receiver(post_save, sender=Ipdet)
 def create_or_update_itemact(sender, instance, created, **kwargs):
     try:
+        # Crear un punto de guardado
+        save_id = transaction.savepoint()
+
         with transaction.atomic():
             if created:
                 # Si es un nuevo Ipdet, crea un nuevo Itemact
-                itemact = Itemact.objects.create(ipdet=instance, qty=instance.qty, tipo=instance.tipo, number=instance.number, item=instance.item)
+                itemact = Itemact.objects.create(
+                    ipdet=instance,
+                    qty=instance.qty,
+                    tipo=instance.tipo,
+                    number=instance.number,
+                    item=instance.item
+                )
             else:
                 # Si se está actualizando un Ipdet, actualiza el Itemact correspondiente
                 itemact = Itemact.objects.select_for_update().get(ipdet=instance)
@@ -29,11 +38,19 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
             ip.total = ip.ipdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
             ip.save()
 
+    except IntegrityError as e:
+        # Rollback a un punto de guardado en caso de error
+        transaction.savepoint_rollback(save_id)
+        print(f"Error de integridad de base de datos: {e}")
+
     except Itemact.DoesNotExist:
-        # Manejar la excepción si el Itemact no existe
+        # Rollback a un punto de guardado en caso de error
+        transaction.savepoint_rollback(save_id)
         print(f"Error: No se encontró un Itemact para el Ipdet {instance}")
+
     except Exception as e:
-        # Manejar otras excepciones
+        # Rollback a un punto de guardado en caso de error
+        transaction.savepoint_rollback(save_id)
         print(f"Error inesperado: {e}")
 
 
@@ -64,7 +81,7 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=Itemact)
 def actualizar_cantidades(sender, instance, **kwargs):
-    save_id = transaction.savepoint()
+    
     try:
         with transaction.atomic():
             # Obtener el código del producto relacionado con el movimiento
@@ -89,18 +106,16 @@ def actualizar_cantidades(sender, instance, **kwargs):
 
             # Puedes imprimir un mensaje si se crea una nueva instancia
             if created:
-                transaction.savepoint_commit(save_id)
                 print(f"ItemactItem creado con éxito para {nombre_producto}")
             else:
                 # Si no es nuevo, actualizar la instancia existente
                 itemact_item.cantidad_actual = cantidad_actual
-                transaction.savepoint_commit(save_id)
+                itemact_item.save()
                 # Imprimir otro mensaje si se actualiza correctamente
                 print(f"Cantidad actualizada de {nombre_producto} a {cantidad_actual} por el movimiento #{instance.pk}")    
 
     except Exception as e:
         # Manejar cualquier excepción que pueda ocurrir durante la operación
-        transaction.savepoint_rollback(save_id)
         print(f"Error inesperado: {e}")
 
 
