@@ -64,6 +64,7 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=Itemact)
 def actualizar_cantidades(sender, instance, **kwargs):
+    save_id = transaction.savepoint()
     try:
         with transaction.atomic():
             # Obtener el código del producto relacionado con el movimiento
@@ -88,16 +89,18 @@ def actualizar_cantidades(sender, instance, **kwargs):
 
             # Puedes imprimir un mensaje si se crea una nueva instancia
             if created:
+                transaction.savepoint_commit(save_id)
                 print(f"ItemactItem creado con éxito para {nombre_producto}")
             else:
                 # Si no es nuevo, actualizar la instancia existente
                 itemact_item.cantidad_actual = cantidad_actual
-                itemact_item.save()
+                transaction.savepoint_commit(save_id)
                 # Imprimir otro mensaje si se actualiza correctamente
                 print(f"Cantidad actualizada de {nombre_producto} a {cantidad_actual} por el movimiento #{instance.pk}")    
 
     except Exception as e:
         # Manejar cualquier excepción que pueda ocurrir durante la operación
+        transaction.savepoint_rollback(save_id)
         print(f"Error inesperado: {e}")
 
 
