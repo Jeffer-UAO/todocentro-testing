@@ -12,7 +12,7 @@ class Ip(models.Model):
     tipo = models.CharField(max_length=20, choices=TIPO)
     # cust = models.ForeignKey('custs.Tercero', on_delete=models.PROTECT, verbose_name=("Proveedor"))
     concept = models.CharField(max_length=80, verbose_name='Concepto', null=True, blank=True)
-    total = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    total = models.DecimalField(max_digits=22, decimal_places=2, default=0.00)
     created_date = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name=("Creado"))
 
 
@@ -51,7 +51,7 @@ class Ipdet(models.Model):
     item = models.ForeignKey('products.Product', on_delete=models.CASCADE ,verbose_name="Item")
     qty = models.DecimalField(max_digits=9, decimal_places=2, blank=False, null=False, default= 0.0, verbose_name=(u'Cantidad'))
     cost = models.DecimalField(max_digits=12, decimal_places=2, blank=False, null=False, default= 0.0, verbose_name=(u'Costo'))
-    subtotal = models.DecimalField(max_digits=12, decimal_places=2, blank=False, null=False, default= 0.0, verbose_name=(u'SubTotal'))
+    subtotal = models.DecimalField(max_digits=22, decimal_places=2, blank=False, null=False, default= 0.0, verbose_name=(u'SubTotal'))
     comments = models.CharField(max_length=100, blank=True, verbose_name=(u'Comentario'))
     
     
@@ -107,7 +107,7 @@ class ItemactItem(models.Model):
     price_old = models.DecimalField(max_digits=12, decimal_places=2, default= 0.0)
     flag = models.CharField(max_length=200, blank=True, default="")
     ref = models.CharField(max_length=200, blank=True, default="")
-    qty = models.DecimalField(max_digits=9, decimal_places=2, default= 0)
+    qty = models.DecimalField(max_digits=9, decimal_places=2, default= 0.0)
     slug = models.CharField(max_length=200, blank=True, default="")
     active = models.CharField(max_length=5, blank=True, default="")
     soldout = models.CharField(max_length=5, blank=True, default="")
