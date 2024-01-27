@@ -46,7 +46,7 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
 
     except Exception as e:       
         transaction.set_rollback(True)
-        print(f"Error inesperado: {e}")
+        print(f"Error inesperado (Itemact): {e}")
 
 
 # @receiver(post_save, sender=Itemact)
@@ -111,7 +111,8 @@ def actualizar_cantidades(sender, instance, **kwargs):
 
     except Exception as e:
         # Manejar cualquier excepción que pueda ocurrir durante la operación
-        print(f"Error inesperado: {e}")
+        transaction.set_rollback(True)
+        print(f"Error inesperado - (ItemactItem): {e}")
 
 
 
