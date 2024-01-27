@@ -66,7 +66,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
             nombre_producto = instance.item.name_extend
             item_uuid = instance.item.item            
             images = getattr(instance.item.images, 'images', "")
-            image_alterna = getattr(instance.item.image_alterna, 'image_alterna', None)
+            image_alterna = getattr(instance.item.image_alterna, 'image_alterna', "")
             # description = getattr(instance.item, 'description', None)
             # price1 = getattr(instance.item, 'price1', None)
             # price2 = getattr(instance.item, 'price2', None)
