@@ -66,18 +66,18 @@ def actualizar_cantidades(sender, instance, **kwargs):
             nombre_producto = instance.item.name_extend
             item_uuid = instance.item.item            
             images = getattr(instance.item, 'images', None)
-            # image_alterna = instance.item.image_alterna
-            # description = instance.item.description
-            # price1 = instance.item.price1
-            # price2 = instance.item.price2
-            # price_old = instance.item.price_old
-            # flag = instance.item.flag
-            # ref = instance.item.ref        
-            # slug = instance.item.slug
-            # active = instance.item.active
-            # soldout = instance.item.soldout
-            # offer = instance.item.offer
-            # home =instance.item.home
+            image_alterna = getattr(instance.item, 'image_alterna', None)
+            description = getattr(instance.item, 'description', None)
+            price1 = getattr(instance.item, 'price1', 0)
+            price2 = getattr(instance.item, 'price2', 0)
+            price_old = getattr(instance.item, 'price_old', 0)
+            flag = getattr(instance.item, 'flag', 0)
+            ref = getattr(instance.item, 'ref', None)        
+            slug = getattr(instance.item, 'slug', None)
+            active = getattr(instance.item, 'active', None)
+            soldout = getattr(instance.item, 'soldout', None)
+            offer = getattr(instance.item, 'offer', None)
+            home =getattr(instance.item, 'home', None)
            
            
 
@@ -85,7 +85,9 @@ def actualizar_cantidades(sender, instance, **kwargs):
             itemact_item, created = ItemactItem.objects.update_or_create(
                 item=instance.item,
                 defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item, 
-                          'uuid': item_uuid
+                          'uuid': item_uuid, 'images': images, 'image_alterna': image_alterna, 'description': description,
+                          'price1': price1, 'price2': price2, 'price_old': price_old, 'flag': flag, 'ref': ref,
+                          'slug': slug, 'active': active, 'soldout': soldout, 'offer': offer, 'home': home
                           } 
             )
             # Puedes imprimir un mensaje si se crea una nueva instancia
