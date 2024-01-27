@@ -7,7 +7,6 @@ from django.db.models import Sum
 from .models import Ipdet, Itemact, ItemactItem
 
 
-
 @receiver(post_save, sender=Ipdet)
 def create_or_update_itemact(sender, instance, created, **kwargs):
     try:     
@@ -49,30 +48,6 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
         print(f"Error inesperado (Itemact): {e}")
 
 
-# @receiver(post_save, sender=Itemact)
-# def actualizar_cantidades(sender, instance, **kwargs):
-#     try:
-#         with transaction.atomic():
-#             # Obtener el código del producto relacionado con el movimiento
-#             codigo_producto = instance.item.codigo
-
-#             # Calcular la cantidad actual utilizando agregación
-#             cantidad_actual = Itemact.objects.filter(item__codigo=codigo_producto).aggregate(
-#                 cantidad_actual=Sum('qty')
-#             )['cantidad_actual']
-
-#             # Obtener el nombre del producto
-#             nombre_producto = instance.item.name_extend
-
-#             # Actualizar o crear la instancia en ItemactItem
-#             ItemactItem.objects.update_or_create(
-#                 itemact_id=instance.id,
-#                 defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item}
-#             )
-
-#     except Exception as e:
-#         # Manejar cualquier excepción que pueda ocurrir durante la operación
-#         print(f"Error inesperado: {e}")
 
 @receiver(post_save, sender=Itemact)
 def actualizar_cantidades(sender, instance, **kwargs):
@@ -89,16 +64,33 @@ def actualizar_cantidades(sender, instance, **kwargs):
 
             # Obtener el datos del producto
             nombre_producto = instance.item.name_extend
-            uuid = instance.item.item
+            uuid = instance.item.item 
+            # Datos nuevos
+            images = instance.item.images
+            image_alterna = instance.item.image_alterna
+            description = instance.item.description
+            price1 = instance.item.price1
+            price2 = instance.item.price2
+            price_old = instance.item.price_old
+            flag = instance.item.flag
+            ref = instance.item.ref        
+            slug = instance.item.slug
+            active = instance.item.active
+            soldout = instance.item.soldout
+            offer = instance.item.offer
+            home =instance.item.home
            
 
             # Actualizar o crear la instancia en ItemactItem
             itemact_item, created = ItemactItem.objects.update_or_create(
                 item=instance.item,
                 defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item, 
-                          'uuid': uuid}
+                          'uuid': uuid, 'images' : images, 'image_alterna' : image_alterna, 
+                          'description' : description, 'price1' : price1, 'price2' : price2, 
+                          'price_old' : price_old, 'flag' : flag, 'ref' : ref, 'slug' : slug,
+                          'active' : active, 'soldout' : soldout,  'offer' : offer, 'home' : home
+                          } 
             )
-
             # Puedes imprimir un mensaje si se crea una nueva instancia
             if created:
                 print(f"ItemactItem creado con éxito para {nombre_producto}")
@@ -132,4 +124,5 @@ def restar_cantidades(sender, instance, **kwargs):
 
     except Exception as e:
         # Manejar cualquier excepción que pueda ocurrir durante la operación
+        transaction.set_rollback(True)
         print(f"Error inesperado: {e}")
