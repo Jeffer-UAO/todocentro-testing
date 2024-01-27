@@ -79,13 +79,14 @@ def actualizar_cantidades(sender, instance, **kwargs):
             soldout = instance.item.soldout
             offer = instance.item.offer
             home =instance.item.home
+            print(f'instancia {instance.item}')
            
 
             # Actualizar o crear la instancia en ItemactItem
             itemact_item, created = ItemactItem.objects.update_or_create(
                 item=instance.item,
                 defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item, 
-                          'uuid': uuid, 'images' : images
+                          'uuid': uuid
                           } 
             )
             # Puedes imprimir un mensaje si se crea una nueva instancia
