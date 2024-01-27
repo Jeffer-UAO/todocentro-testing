@@ -112,7 +112,7 @@ def restar_cantidades(sender, instance, **kwargs):
             cantidad_actual = Itemact.objects.filter(item__codigo=codigo_producto).exclude(pk=instance.pk).aggregate(
                 cantidad_actual=Coalesce(Sum('qty'), 0)
             )['cantidad_actual']
-
+            print(f'instance.pk')
             # Obtener el nombre del producto
             nombre_producto = instance.item.name_extend
 
