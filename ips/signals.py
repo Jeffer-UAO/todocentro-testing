@@ -79,7 +79,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
             soldout = instance.item.soldout
             offer = instance.item.offer
             home =instance.item.home
-            print(f'instancia {instance.item}')
+            print(f'instancia {instance.item.images}')
            
 
             # Actualizar o crear la instancia en ItemactItem
