@@ -96,7 +96,7 @@ class Itemact(models.Model):
 
 class ItemactItem(models.Model):   
     item = models.ForeignKey('products.Product', on_delete=models.CASCADE, null=True, blank=True, default="")
-    cantidad_actual = models.DecimalField(max_digits=2, decimal_places=2, default= 0)
+    cantidad_actual = models.DecimalField(max_digits=9, decimal_places=2, default= 0)
     nombre = models.CharField(max_length=200, blank=True, null=True)
     uuid = models.UUIDField(editable=False, blank=True, null=True)
     images = models.CharField(max_length=600, default="", blank=True)
