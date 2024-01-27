@@ -10,9 +10,7 @@ from .models import Ipdet, Itemact, ItemactItem
 
 @receiver(post_save, sender=Ipdet)
 def create_or_update_itemact(sender, instance, created, **kwargs):
-    try:
-        # Crear un punto de guardado
-        save_id = transaction.savepoint()
+    try:     
 
         with transaction.atomic():
             if created:
@@ -38,19 +36,16 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
             ip.total = ip.ipdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
             ip.save()
 
-    except IntegrityError as e:
-        # Rollback a un punto de guardado en caso de error
-        transaction.savepoint_rollback(save_id)
+    except IntegrityError as e:      
+        transaction.set_rollback(True)
         print(f"Error de integridad de base de datos: {e}")
 
-    except Itemact.DoesNotExist:
-        # Rollback a un punto de guardado en caso de error
-        transaction.savepoint_rollback(save_id)
+    except Itemact.DoesNotExist:           
+        transaction.set_rollback(True)
         print(f"Error: No se encontró un Itemact para el Ipdet {instance}")
 
-    except Exception as e:
-        # Rollback a un punto de guardado en caso de error
-        transaction.savepoint_rollback(save_id)
+    except Exception as e:       
+        transaction.set_rollback(True)
         print(f"Error inesperado: {e}")
 
 
