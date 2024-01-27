@@ -97,7 +97,22 @@ class Itemact(models.Model):
 class ItemactItem(models.Model):   
     item = models.ForeignKey('products.Product', on_delete=models.CASCADE, null=True, blank=True, default="")
     cantidad_actual = models.SmallIntegerField(default=0)
-    nombre = models.CharField(max_length=200, blank=True, null=True)
+    nombre = models.CharField(max_length=200, blank=True, null=True)    
+    codigo = models.CharField(max_length=50, default="")    
+    images = models.CharField(max_length=100, null=True, default="", blank=True) 
+    image_alterna = models.CharField(max_length=600, null=True, default="", blank=True)
+    description = models.TextField(max_length=2000, blank=True)
+    price1 = models.PositiveIntegerField(blank=True, null=True, default=0)
+    price2 = models.PositiveIntegerField(blank=True, null=True, default=0)
+    price_old = models.PositiveIntegerField(blank=True, null=True, default=0)
+    flag = models.CharField(max_length=200, blank=True, null=True, default="")
+    ref = models.CharField(max_length=200, blank=True, null=True, default="")
+    qty = models.BigIntegerField(blank=True, null=True)
+    # slug = models.SlugField(max_length=200)
+    active = models.BooleanField(default=True)
+    soldout = models.BooleanField(default=False)
+    offer = models.BooleanField(default=False)
+    home = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Ítem de Activo"
