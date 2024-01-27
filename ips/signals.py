@@ -109,7 +109,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
                 # Imprimir otro mensaje si se actualiza correctamente
                 print(f"Cantidad actualizada de {nombre_producto} a {cantidad_actual} por el movimiento #{instance.pk}")    
 
-    except IntegrityError as e:
+    except Exception as e:
         # Manejar cualquier excepción que pueda ocurrir durante la operación
         transaction.set_rollback(True)
         print(f"Error inesperado - (ItemactItem): {e}")
