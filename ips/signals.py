@@ -64,9 +64,8 @@ def actualizar_cantidades(sender, instance, **kwargs):
 
             # Obtener el datos del producto
             nombre_producto = instance.item.name_extend
-            item_uuid = instance.item.item 
-            # Datos nuevos
-            # images = instance.item.images
+            item_uuid = instance.item.item            
+            images = getattr(instance.item, 'images', None)
             # image_alterna = instance.item.image_alterna
             # description = instance.item.description
             # price1 = instance.item.price1
@@ -79,7 +78,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
             # soldout = instance.item.soldout
             # offer = instance.item.offer
             # home =instance.item.home
-            print(f'instancia {instance.item.image_alterna}')
+           
            
 
             # Actualizar o crear la instancia en ItemactItem
