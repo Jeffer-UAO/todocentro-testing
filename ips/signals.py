@@ -77,7 +77,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
             # images = instance.item.images if instance.item.images is not None else ""
             # image_alterna = instance.item.image_alterna if instance.item.image_alterna else ""
             # description = getattr(instance.item, 'description', None)
-            # price1 = getattr(instance.item, 'price1', None)
+            price1 = instance.item.price1 if instance.item.price1 else 0
             # price2 = getattr(instance.item, 'price2', None)
             # price_old = getattr(instance.item, 'price_old', None)
             # flag = getattr(instance.item, 'flag', None)
@@ -94,10 +94,10 @@ def actualizar_cantidades(sender, instance, **kwargs):
             itemact_item, created = ItemactItem.objects.update_or_create(
                 item=instance.item,
                 defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item, 
-                           'uuid': item_uuid, 'slug': slug
+                           'uuid': item_uuid, 'slug': slug, 'price1': price1
                         #    , 'images': images, 'image_alterna': image_alterna
                         #     , 'description': description,
-                        #   'price1': price1, 'price2': price2, 'price_old': price_old, 'flag': flag, 'ref': ref,
+                        #   , 'price2': price2, 'price_old': price_old, 'flag': flag, 'ref': ref,
                         #   'slug': slug, 'active': active, 'soldout': soldout, 'offer': offer, 'home': home
                           } 
             )
