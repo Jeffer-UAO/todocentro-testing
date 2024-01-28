@@ -1,10 +1,10 @@
-from django.db import transaction, IntegrityError
 from django.db.models import F
-from django.db.models.functions import Coalesce
 from django.db.models.signals import post_save, pre_delete
-from django.dispatch import receiver
 from django.db.models import Sum
-from .models import Ipdet, Itemact, ItemactItem
+from django.db import transaction, IntegrityError
+from django.dispatch import receiver
+from inventory.models import Itemact, ItemactItem
+from .models import Ipdet
 
 
 @receiver(post_save, sender=Ipdet)
