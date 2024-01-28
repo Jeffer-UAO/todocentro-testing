@@ -10,9 +10,9 @@ class Ip(models.Model):
 
     number = models.PositiveIntegerField(editable=False, default=0, verbose_name=(u'No. Documento'))
     tipo = models.CharField(max_length=20, choices=TIPO)
-    # cust = models.ForeignKey('custs.Tercero', on_delete=models.PROTECT, verbose_name=("Proveedor"))
-    concept = models.CharField(max_length=80, verbose_name='Concepto', null=True, blank=True)
+    cust = models.ForeignKey('custs.Tercero', on_delete=models.PROTECT, verbose_name=("Proveedor"))
     total = models.DecimalField(max_digits=22, decimal_places=2, default=0.00)
+    concept = models.CharField(max_length=80, verbose_name='Concepto', null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name=("Creado"))
 
 
