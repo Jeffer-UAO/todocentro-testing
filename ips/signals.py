@@ -5,6 +5,7 @@ from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.db.models import Sum
 from .models import Ipdet, Itemact, ItemactItem
+from products.models import Product
 
 
 @receiver(post_save, sender=Ipdet)
@@ -54,19 +55,24 @@ def actualizar_cantidades(sender, instance, **kwargs):
     
     try:
         with transaction.atomic():
-            # Obtener el código del producto relacionado con el movimiento
+            # Obtener el producto relacionado con el movimiento
             codigo_producto = instance.item.codigo
+            nombre_producto = instance.item.name_extend
+            item_uuid = instance.item.item            
 
             # Calcular la cantidad actual utilizando agregación
             cantidad_actual = Itemact.objects.filter(item__codigo=codigo_producto).aggregate(
                 cantidad_actual=Sum('qty')
             )['cantidad_actual']
 
+            producto_relacionado = Product.objects.get(codigo=codigo_producto)
+
+            print(producto_relacionado)
+
+
             # Obtener el datos del producto
-            nombre_producto = instance.item.name_extend
-            item_uuid = instance.item.item            
-            images = instance.item.images if instance.item.images is not None else ""
-            image_alterna = instance.item.image_alterna if instance.item.image_alterna else ""
+            # images = instance.item.images if instance.item.images is not None else ""
+            # image_alterna = instance.item.image_alterna if instance.item.image_alterna else ""
             # description = getattr(instance.item, 'description', None)
             # price1 = getattr(instance.item, 'price1', None)
             # price2 = getattr(instance.item, 'price2', None)
