@@ -67,10 +67,10 @@ def actualizar_cantidades(sender, instance, **kwargs):
             flag = instance.item.flag if instance.item.flag else ""
             ref = instance.item.ref if instance.item.ref else ""
             slug = instance.item.slug if instance.item.slug else ""
-            active = instance.item.active if instance.item.active else ""
-            soldout = instance.item.soldout if instance.item.soldout else ""
-            offer = instance.item.offer if instance.item.offer else ""
-            home = instance.item.home if instance.item.home else "" 
+            active = instance.item.active if instance.item.active else "True"
+            soldout = instance.item.soldout if instance.item.soldout else "False"
+            offer = instance.item.offer if instance.item.offer else "False"
+            home = instance.item.home if instance.item.home else "False" 
 
             # Calcular la cantidad actual utilizando agregación
             cantidad_actual = Itemact.objects.filter(item__codigo=codigo_producto).aggregate(
