@@ -82,7 +82,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
             # price_old = getattr(instance.item, 'price_old', None)
             # flag = getattr(instance.item, 'flag', None)
             # ref = getattr(instance.item, 'ref', None)        
-            # slug = getattr(instance.item, 'slug', None)
+            slug = instance.item.slug if instance.item.slug else ""
             # active = getattr(instance.item, 'active', None)
             # soldout = getattr(instance.item, 'soldout', None)
             # offer = getattr(instance.item, 'offer', None)
@@ -94,7 +94,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
             itemact_item, created = ItemactItem.objects.update_or_create(
                 item=instance.item,
                 defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item, 
-                           'uuid': item_uuid
+                           'uuid': item_uuid, 'slug': slug
                         #    , 'images': images, 'image_alterna': image_alterna
                         #     , 'description': description,
                         #   'price1': price1, 'price2': price2, 'price_old': price_old, 'flag': flag, 'ref': ref,
