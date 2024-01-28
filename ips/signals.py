@@ -78,8 +78,8 @@ def actualizar_cantidades(sender, instance, **kwargs):
             # image_alterna = instance.item.image_alterna if instance.item.image_alterna else ""
             # description = getattr(instance.item, 'description', None)
             price1 = instance.item.price1 if instance.item.price1 else 0
-            # price2 = getattr(instance.item, 'price2', None)
-            # price_old = getattr(instance.item, 'price_old', None)
+            price2 = instance.item.price2 if instance.item.price2 else 0
+            price_old = instance.item.price_old if instance.item.price_old else 0
             # flag = getattr(instance.item, 'flag', None)
             # ref = getattr(instance.item, 'ref', None)        
             slug = instance.item.slug if instance.item.slug else ""
@@ -94,10 +94,10 @@ def actualizar_cantidades(sender, instance, **kwargs):
             itemact_item, created = ItemactItem.objects.update_or_create(
                 item=instance.item,
                 defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item, 
-                           'uuid': item_uuid, 'slug': slug, 'price1': price1
+                           'uuid': item_uuid, 'slug': slug, 'price1': price1, 'price2': price2, 'price_old': price_old
                         #    , 'images': images, 'image_alterna': image_alterna
                         #     , 'description': description,
-                        #   , 'price2': price2, 'price_old': price_old, 'flag': flag, 'ref': ref,
+                        #   ,  , 'flag': flag, 'ref': ref,
                         #   'slug': slug, 'active': active, 'soldout': soldout, 'offer': offer, 'home': home
                           } 
             )
