@@ -5,7 +5,6 @@ from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.db.models import Sum
 from .models import Ipdet, Itemact, ItemactItem
-from products.models import Product
 
 
 @receiver(post_save, sender=Ipdet)
@@ -59,20 +58,6 @@ def actualizar_cantidades(sender, instance, **kwargs):
             codigo_producto = instance.item.codigo
             nombre_producto = instance.item.name_extend
             item_uuid = instance.item.item            
-
-            # Calcular la cantidad actual utilizando agregación
-            cantidad_actual = Itemact.objects.filter(item__codigo=codigo_producto).aggregate(
-                cantidad_actual=Sum('qty')
-            )['cantidad_actual']
-
-            producto_relacionado = Product.objects.get(codigo=codigo_producto)
-
-            print(producto_relacionado.price1)
-            print(instance.item.price1)
-            print(instance.item.image_alterna)
-
-
-
             images = instance.item.images if instance.item.images else ""
             image_alterna = instance.item.image_alterna if instance.item.image_alterna else ""
             description = instance.item.description if instance.item.description else ""
@@ -82,22 +67,23 @@ def actualizar_cantidades(sender, instance, **kwargs):
             flag = instance.item.flag if instance.item.flag else ""
             ref = instance.item.ref if instance.item.ref else ""
             slug = instance.item.slug if instance.item.slug else ""
-            # active = getattr(instance.item, 'active', None)
-            # soldout = getattr(instance.item, 'soldout', None)
-            # offer = getattr(instance.item, 'offer', None)
-            # home =getattr(instance.item, 'home', None)
-           
-           
+            active = instance.item.active if instance.item.active else ""
+            soldout = instance.item.soldout if instance.item.soldout else ""
+            offer = instance.item.offer if instance.item.offer else ""
+            home = instance.item.home if instance.item.home else "" 
 
+            # Calcular la cantidad actual utilizando agregación
+            cantidad_actual = Itemact.objects.filter(item__codigo=codigo_producto).aggregate(
+                cantidad_actual=Sum('qty')
+            )['cantidad_actual']
+           
             # Actualizar o crear la instancia en ItemactItem
             itemact_item, created = ItemactItem.objects.update_or_create(
                 item=instance.item,
                 defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item, 
                            'uuid': item_uuid, 'slug': slug, 'price1': price1, 'price2': price2, 'price_old': price_old,
                             'images': images, 'image_alterna': image_alterna, 'description': description,
-                            'flag': flag, 'ref': ref
-                     
-                        #   'slug': slug, 'active': active, 'soldout': soldout, 'offer': offer, 'home': home
+                            'flag': flag, 'ref': ref, 'slug': slug, 'active': active, 'soldout': soldout, 'offer': offer, 'home': home
                           } 
             )
             # Puedes imprimir un mensaje si se crea una nueva instancia
