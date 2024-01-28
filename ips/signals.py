@@ -67,7 +67,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
 
             producto_relacionado = Product.objects.get(codigo=codigo_producto)
 
-            print(producto_relacionado)
+            print(producto_relacionado.codigo)
 
 
             # Obtener el datos del producto
