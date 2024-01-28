@@ -74,7 +74,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
 
 
             images = instance.item.images if instance.item.images else ""
-            # image_alterna = instance.item.image_alterna if instance.item.image_alterna else ""
+            image_alterna = instance.item.image_alterna if instance.item.image_alterna else ""
             # description = getattr(instance.item, 'description', None)
             price1 = instance.item.price1 if instance.item.price1 else 0
             price2 = instance.item.price2 if instance.item.price2 else 0
@@ -94,8 +94,8 @@ def actualizar_cantidades(sender, instance, **kwargs):
                 item=instance.item,
                 defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item, 
                            'uuid': item_uuid, 'slug': slug, 'price1': price1, 'price2': price2, 'price_old': price_old,
-                            'images': images
-                        # , 'image_alterna': image_alterna
+                            'images': images, 'image_alterna': image_alterna
+                        # , 
                         #     , 'description': description,
                         #   ,  , 'flag': flag, 'ref': ref,
                         #   'slug': slug, 'active': active, 'soldout': soldout, 'offer': offer, 'home': home
