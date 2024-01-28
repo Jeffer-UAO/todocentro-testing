@@ -91,7 +91,8 @@ def actualizar_cantidades(sender, instance, **kwargs):
             itemact_item, created = ItemactItem.objects.update_or_create(
                 item=instance.item,
                 defaults={'cantidad_actual': cantidad_actual, 'nombre': nombre_producto, 'item': instance.item, 
-                           'uuid': item_uuid, 'images': images, 'image_alterna': image_alterna
+                           'uuid': item_uuid
+                        #    , 'images': images, 'image_alterna': image_alterna
                         #     , 'description': description,
                         #   'price1': price1, 'price2': price2, 'price_old': price_old, 'flag': flag, 'ref': ref,
                         #   'slug': slug, 'active': active, 'soldout': soldout, 'offer': offer, 'home': home
