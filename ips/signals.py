@@ -69,6 +69,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
 
             print(producto_relacionado.price1)
             print(instance.item.price1)
+            print(instance.item.slug)
 
 
 
