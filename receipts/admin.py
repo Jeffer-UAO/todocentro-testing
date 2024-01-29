@@ -1,5 +1,5 @@
 from django.contrib import admin
-from ips.models import Ip, Ipdet
+from .models import Ip, Ipdet
 
 
 

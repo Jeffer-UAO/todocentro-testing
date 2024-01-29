@@ -8,9 +8,9 @@ class Order(models.Model):
         ('PEDIDO EXTERNO', 'PE')
     )
 
+    cust = models.ForeignKey('custs.Tercero', on_delete=models.PROTECT, verbose_name=("Cliente"))
     number = models.PositiveIntegerField(editable=False, default=0, verbose_name=(u'Pedido'))
     tipo = models.CharField(max_length=20, choices=TIPO)
-    cust = models.ForeignKey('custs.Tercero', on_delete=models.PROTECT, verbose_name=("Cliente"))
     total = models.DecimalField(max_digits=22, decimal_places=2, default=0.00)
     concept = models.CharField(max_length=80, verbose_name='Concepto', null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name=("Solicitado"))
@@ -45,10 +45,10 @@ class Order(models.Model):
     
 
 class Orderdet(models.Model):   
-    tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
-    number = models.PositiveIntegerField(editable=False, default=0)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)     
     item = models.ForeignKey('products.Product', on_delete=models.CASCADE ,verbose_name="Item")
+    tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
+    number = models.PositiveIntegerField(editable=False, default=0)
     qty = models.DecimalField(max_digits=9, decimal_places=2, blank=False, null=False, default= 1, verbose_name=(u'Cantidad'))
     price = models.DecimalField(max_digits=12, decimal_places=2, blank=False, null=False, default= 0.0, verbose_name=(u'Precio'))
     subtotal = models.DecimalField(max_digits=22, decimal_places=2, blank=False, null=False, default= 0.0, verbose_name=(u'SubTotal'))
