@@ -24,7 +24,7 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
                 )
             else:
                 # Si se está actualizando un Orderdet, actualiza el Itemact correspondiente
-                itemact = Itemact.objects.select_for_update().get(ipdet=instance)
+                itemact = Itemact.objects.select_for_update().get(orderdet=instance)
                 itemact.qty = instance.qty
                 itemact.tipo = instance.tipo
                 itemact.number = instance.number   
