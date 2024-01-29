@@ -11,7 +11,7 @@ from inventory.models import Itemact, ItemactItem
 @receiver(post_save, sender=Orderdet)
 def create_or_update_itemact(sender, instance, created, **kwargs):
     try:     
-
+        print('receiver Oedet')
         with transaction.atomic():
             if created:
                 # Si es un nuevo Ordedet, crea un nuevo Itemact
