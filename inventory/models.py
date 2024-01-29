@@ -1,7 +1,8 @@
 from django.db import models
 
 class Itemact(models.Model):   
-    ipdet = models.ForeignKey('receipts.Ipdet', on_delete=models.CASCADE)        
+    ipdet = models.ForeignKey('receipts.Ipdet', on_delete=models.CASCADE, null=True, blank=True, default=None)        
+    orderdet = models.ForeignKey('orders.Orderdet', on_delete=models.CASCADE, null=True, blank=True, default=None)        
     item = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     qty = models.DecimalField(max_digits=9, decimal_places=2, default= 0)
     tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
