@@ -4,25 +4,26 @@ from django.db.models.functions import Coalesce
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.db.models import Sum
-from .models import Ipdet, Itemact, ItemactItem
+from .models import Orderdet 
+from inventory.models import Itemact, ItemactItem
 
 
-@receiver(post_save, sender=Ipdet)
+@receiver(post_save, sender=Orderdet)
 def create_or_update_itemact(sender, instance, created, **kwargs):
     try:     
 
         with transaction.atomic():
             if created:
-                # Si es un nuevo Ipdet, crea un nuevo Itemact
+                # Si es un nuevo Ordedet, crea un nuevo Itemact
                 itemact = Itemact.objects.create(
-                    ipdet=instance,
+                    orderdet=instance,
                     qty=instance.qty,
                     tipo=instance.tipo,
                     number=instance.number,
                     item=instance.item
                 )
             else:
-                # Si se está actualizando un Ipdet, actualiza el Itemact correspondiente
+                # Si se está actualizando un Orderdet, actualiza el Itemact correspondiente
                 itemact = Itemact.objects.select_for_update().get(ipdet=instance)
                 itemact.qty = instance.qty
                 itemact.tipo = instance.tipo
@@ -30,10 +31,10 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
                 itemact.item = instance.item           
                 itemact.save()
             
-            # Actualizar el campo total en el modelo Ip después de guardar un Ipdet
-            ip = instance.ip
-            ip.total = ip.ipdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
-            ip.save()
+            # Actualizar el campo total en el modelo Order después de guardar un Orderdet
+            order = instance.order
+            order.total = order.orderdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
+            order.save()
 
     except IntegrityError as e:      
         transaction.set_rollback(True)
