@@ -20,4 +20,6 @@ class IpAdmin(admin.ModelAdmin):
     def total_en_pesos(self, obj):
         return f'${obj.total:.2f}'
     
+    total_en_pesos.short_description = 'Total en Pesos'
+    
 admin.site.register(Ip, IpAdmin)
