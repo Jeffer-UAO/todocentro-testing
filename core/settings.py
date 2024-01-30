@@ -18,11 +18,9 @@ ALLOWED_HOSTS = ["*"]
 
 SHARED_APPS = (
     'django_tenants',
-    'django.contrib.auth',
     'customers',
     # "admin_interface",
     'django.contrib.contenttypes',
-    'accounts',
 )
 
 TENANT_APPS = (
@@ -53,7 +51,7 @@ TENANT_APPS = (
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + \
-    [app for app in TENANT_APPS if app  in SHARED_APPS]
+    [app for app in TENANT_APPS if app not in SHARED_APPS]
 
 
 MIDDLEWARE = [
