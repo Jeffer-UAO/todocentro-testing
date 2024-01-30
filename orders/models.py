@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Max
 
 
 
@@ -25,14 +26,14 @@ class Order(models.Model):
         try:
             # Verificamos si es una instancia nueva
             if not self.pk:
-                # Obtenemos el último número para el tipo actual
-                ultimo_numero = Order.objects.filter(tipo=self.tipo).order_by('-number').first()
+                # Obtenemos el último número para el tipo actual                
+                ultimo_numero = Order.objects.filter(tipo=self.tipo).aggregate(Max('number'))['number__max']
 
                 # Si hay un último número, incrementamos en 1, de lo contrario, comenzamos desde 1
-                nuevo_numero = int(ultimo_numero.number) + 1 if ultimo_numero else 1
+                nuevo_numero = ultimo_numero + 1 if ultimo_numero else 1
 
                 # Actualizamos el campo 'number' con el nuevo número
-                self.number = str(nuevo_numero)               
+                self.number = nuevo_numero
 
             super(Order, self).save(*args, **kwargs)
 
@@ -54,17 +55,10 @@ class Orderdet(models.Model):
     subtotal = models.DecimalField(max_digits=22, decimal_places=2, blank=False, null=False, default= 0.0, verbose_name=(u'SubTotal'))
     comments = models.CharField(max_length=100, blank=True, verbose_name=(u'Comentario'))
     
-    
-    @property
-    def order_info(self):
-        # Acceder al tipo y número de la order relacionada
-        return {'tipo': self.order.tipo, 'number': self.order.number}
-    
+
     def save(self, *args, **kwargs):
-        # Antes de guardar, establecer tipo y número basándose en la propiedad ip_info
-        order_info = self.order_info
-        self.tipo = order_info['tipo']
-        self.number = order_info['number']
+        # Establecer tipo y número basándose en la propiedad ip_info
+        self.tipo, self.number = self.order.tipo, self.order.number
 
         # Calcular el subtotal al multiplicar el costo por la cantidad
         self.subtotal = self.price * self.qty
@@ -76,6 +70,6 @@ class Orderdet(models.Model):
         verbose_name_plural = "Detalles"
 
     def __str__(self):
-        return f"{self.order} - {self.item}"
+        return f"{self.ip} - {self.item}"
 
 
