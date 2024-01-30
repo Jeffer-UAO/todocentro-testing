@@ -45,15 +45,20 @@ class ItemactItem(models.Model):
 
     def set_tenant(self):
         try:
-            # Obtener el modelo de inquilino actual
-            tenant_model = get_tenant_model()
-            
-            # Obtener el inquilino actual
-            tenant = tenant_model.objects.get(schema_name=get_public_schema_name())
+            # Obtener el nombre del esquema público
+            public_schema_name = get_public_schema_name()
 
-            if tenant:
-                self.tenant = tenant
-                self.save()
+            # Verificar si el esquema público existe
+            if schema_exists(public_schema_name):
+                # Obtener el modelo de inquilino actual
+                tenant_model = get_tenant_model()
+
+                # Obtener el inquilino actual
+                tenant = tenant_model.objects.get(schema_name=public_schema_name)
+
+                if tenant:
+                    self.tenant = tenant
+                    self.save()
         except ImportError:
             # Importar get_tenant_model puede causar un error si no se encuentra
             pass
