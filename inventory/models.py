@@ -36,7 +36,7 @@ class ItemactItem(models.Model):
     soldout = models.CharField(max_length=5, blank=True, default="")
     offer = models.CharField(max_length=5, blank=True, default="")
     home = models.CharField(max_length=5, blank=True, default="")
-    tenant = models.ForeignKey(Client, on_delete=models.CASCADE, blank=True, default="")
+    tenant = models.ForeignKey('customers.Client', on_delete=models.CASCADE, blank=True, default="", null=True)
 
     class Meta:
         verbose_name = "Control inventario"
@@ -45,6 +45,4 @@ class ItemactItem(models.Model):
     def __str__(self):
         return f"{self.item} - {self.nombre}"
     
-    def set_tenant(self, tenant):
-        self.tenant = tenant
-        self.save()
+  

@@ -7,12 +7,14 @@ from inventory.models import Itemact, ItemactItem
 
 
 
+
 @receiver(post_save, sender=Itemact)
 def actualizar_cantidades(sender, instance, **kwargs):
     try:
         with transaction.atomic():
             # Obtener el producto relacionado con el movimiento
             item = instance.item
+     
 
             # Calcular la cantidad actual utilizando agregación
             cantidad_actual = Itemact.objects.filter(item__codigo=item.codigo).aggregate(
@@ -22,6 +24,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
             # Actualizar o crear la instancia en ItemactItem
             itemact_item, created = ItemactItem.objects.update_or_create(
                 item=item,
+             
                 defaults={
                     'cantidad_actual': cantidad_actual,
                     'nombre': item.name_extend,
