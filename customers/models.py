@@ -1,5 +1,6 @@
 from django.db import models
 from django_tenants.models import TenantMixin, DomainMixin
+import uuid
 
 
 class Customer(models.Model):
@@ -52,7 +53,7 @@ class Product_public(models.Model):
         max_length=50, verbose_name=("Código")
     )
     domain = models.CharField(
-        max_length=250, null=True, default="", verbose_name=("Dominio")
+        max_length=5, null=True, default="", verbose_name=("Dominio")
     )
     name_extend = models.CharField(
         max_length=200, unique=True, verbose_name=("Nombre Producto")
@@ -94,7 +95,7 @@ class Product_public(models.Model):
     modified_date = models.CharField(
         max_length=50, blank=True, null=True, default="", verbose_name=("Modificado")
     )
-    
+    domain = models.CharField(max_length=255, blank=True, null=True)
    
     def setTenant(self, tenant):
         self.domain = tenant.schema_name
