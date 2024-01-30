@@ -178,3 +178,7 @@ STATICFILES_DIRS = (
 )
 
 AUTHENTICATION_CLASSES = []
+
+AUTHENTICATION_CLASSES = [
+    'path.to.your.custom.AuthenticationClass',  # Reemplaza con tu clase de autenticación personalizada si es necesario
+]
