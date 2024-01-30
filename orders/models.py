@@ -57,7 +57,7 @@ class Orderdet(models.Model):
     
 
     def save(self, *args, **kwargs):
-        # Establecer tipo y número basándose en la propiedad ip_info
+        # Establecer tipo y número basándose de la instancia relacionada
         self.tipo, self.number = self.order.tipo, self.order.number
 
         # Calcular el subtotal al multiplicar el costo por la cantidad

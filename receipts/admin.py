@@ -16,5 +16,8 @@ class IpAdmin(admin.ModelAdmin):
     readonly_fields = ('total',)
     inlines = [IpdetInline]    
     list_per_page = 6
+
+    def total_en_pesos(self, obj):
+        return f'${obj.total:.2f}'
     
 admin.site.register(Ip, IpAdmin)
