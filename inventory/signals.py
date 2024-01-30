@@ -4,7 +4,7 @@ from django.db.models import Sum
 from django.db import transaction, IntegrityError
 from django.dispatch import receiver
 from inventory.models import Itemact, ItemactItem
-from .models import Ipdet
+
 
 
 @receiver(post_save, sender=Itemact)
