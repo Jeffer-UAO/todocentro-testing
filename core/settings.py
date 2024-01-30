@@ -22,6 +22,7 @@ SHARED_APPS = (
     'customers',
     # "admin_interface",
     'django.contrib.contenttypes',
+    'accounts',
 )
 
 TENANT_APPS = (
