@@ -42,6 +42,10 @@ class ItemactItem(models.Model):
         verbose_name = "Control inventario"
         verbose_name_plural = "Control inventario"
 
+    def set_tenant(self, tenant):
+        self.tenant = tenant.schema_name
+        self.save()
+
     def __str__(self):
         return f"{self.item} - {self.nombre}"
     
