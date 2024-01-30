@@ -70,6 +70,6 @@ class Orderdet(models.Model):
         verbose_name_plural = "Detalles"
 
     def __str__(self):
-        return f"{self.ip} - {self.item}"
+        return f"{self.order} - {self.item}"
 
 
