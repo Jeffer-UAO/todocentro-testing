@@ -43,29 +43,7 @@ class ItemactItem(models.Model):
         verbose_name = "Control inventario"
         verbose_name_plural = "Control inventario"
 
-    def set_tenant(self):
-        try:
-            # Obtener el nombre del esquema público
-            public_schema_name = get_public_schema_name()
-
-            # Verificar si el esquema público existe
-            if schema_exists(public_schema_name):
-                # Obtener el modelo de inquilino actual
-                tenant_model = get_tenant_model()
-
-                # Obtener el inquilino actual
-                tenant = tenant_model.objects.get(schema_name=public_schema_name)
-
-                if tenant:
-                    self.tenant = tenant
-                    self.save()
-        except ImportError:
-            # Importar get_tenant_model puede causar un error si no se encuentra
-            pass
-        except tenant_model.DoesNotExist:
-            # Manejar el caso en que no se encuentre el inquilino
-            pass
-
+    
     def __str__(self):
         return f"{self.item} - {self.nombre}"
     
