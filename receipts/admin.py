@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import Ip, Ipdet
 
 
-
 class IpdetInline(admin.TabularInline):
     model = Ipdet
     readonly_fields = ('subtotal',)
@@ -16,10 +15,5 @@ class IpAdmin(admin.ModelAdmin):
     readonly_fields = ('total',)
     inlines = [IpdetInline]    
     list_per_page = 6
-
-    def total_en_pesos(self, obj):
-        return f'${obj.total:.2f}'
-    
-    total_en_pesos.short_description = 'Total en Pesos'
     
 admin.site.register(Ip, IpAdmin)
