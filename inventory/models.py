@@ -1,4 +1,5 @@
 from django.db import models
+from customers.models import Client
 
 class Itemact(models.Model):   
     ipdet = models.ForeignKey('receipts.Ipdet', on_delete=models.CASCADE, null=True, blank=True, default=None)        
@@ -35,9 +36,7 @@ class ItemactItem(models.Model):
     soldout = models.CharField(max_length=5, blank=True, default="")
     offer = models.CharField(max_length=5, blank=True, default="")
     home = models.CharField(max_length=5, blank=True, default="")
-    domain = models.CharField(
-        max_length=250, null=True, default="", verbose_name=("Dominio")
-    )
+    tenant = models.ForeignKey(Client, on_delete=models.CASCADE, blank=True, default="")
 
     class Meta:
         verbose_name = "Control inventario"
@@ -47,5 +46,5 @@ class ItemactItem(models.Model):
         return f"{self.item} - {self.nombre}"
     
     def set_tenant(self, tenant):
-        self.domain = tenant.schema_name
+        self.tenant = tenant
         self.save()
