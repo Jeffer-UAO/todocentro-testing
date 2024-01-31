@@ -31,8 +31,11 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
 
             # Actualiza el campo total en el modelo Order después de guardar un Orderdet
             order = instance.order
-            order.total = order.orderdet_set.filter(tipo='detalle').aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
+            order_total_before = order.total  # Guarda el valor antes de la actualización
+            order.total = order.orderdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
             order.save()
+            print(f"Order #{order.pk} - Total antes: {order_total_before}, Total después: {order.total}")
+
 
     except IntegrityError as e:
         transaction.set_rollback(True)
