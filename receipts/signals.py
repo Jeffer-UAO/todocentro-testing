@@ -3,6 +3,7 @@ from django.db.models import Sum
 from django.db import transaction, IntegrityError
 from django.dispatch import receiver
 from .models import Ipdet
+from inventory.models import Itemact
 
 
 
@@ -11,8 +12,8 @@ def create_or_update_ipdet(sender, instance, created, **kwargs):
     try:      
         with transaction.atomic():                
 
-            # Si es creado, crea un nuevo ipdet, de lo contrario, actualiza el existente
-            ipdet, _ = Ipdet.objects.get_or_create(ipdet=instance, defaults={
+            # Si es creado, crea un nuevo itemact, de lo contrario, actualiza el existente
+            itemact, _ = Itemact.objects.get_or_create(ipdet=instance, defaults={
                 'qty': instance.qty,
                 'tipo': instance.tipo,
                 'number': instance.number,
@@ -20,12 +21,12 @@ def create_or_update_ipdet(sender, instance, created, **kwargs):
             })
 
             if not created:
-                # Si no es creado, actualiza el ipdet existente
-                ipdet.qty = instance.qty
-                ipdet.tipo = instance.tipo
-                ipdet.number = instance.number
-                ipdet.item = instance.item
-                ipdet.save()
+                # Si no es creado, actualiza el itemact existente
+                itemact.qty = instance.qty
+                itemact.tipo = instance.tipo
+                itemact.number = instance.number
+                itemact.item = instance.item
+                itemact.save()
 
             # Actualizar el campo total en el modelo Ip después de guardar un Ipdet
             ip = instance.ip
