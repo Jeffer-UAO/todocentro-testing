@@ -9,13 +9,11 @@ from .models import Ipdet
 @receiver(post_save, sender=Ipdet)
 def create_or_update_ipdet(sender, instance, created, **kwargs):
     try:      
-        with transaction.atomic():
-            # Calcula la cantidad para el nuevo ipdet
-            qty = instance.qty * -1
+        with transaction.atomic():                
 
             # Si es creado, crea un nuevo ipdet, de lo contrario, actualiza el existente
             ipdet, _ = Ipdet.objects.get_or_create(ipdet=instance, defaults={
-                'qty': qty,
+                'qty': instance.qty,
                 'tipo': instance.tipo,
                 'number': instance.number,
                 'item': instance.item
@@ -23,7 +21,7 @@ def create_or_update_ipdet(sender, instance, created, **kwargs):
 
             if not created:
                 # Si no es creado, actualiza el ipdet existente
-                ipdet.qty = qty
+                ipdet.qty = instance.qty
                 ipdet.tipo = instance.tipo
                 ipdet.number = instance.number
                 ipdet.item = instance.item
