@@ -53,6 +53,7 @@ class Product(models.Model):
     qty = models.BigIntegerField(blank=True, null=True, verbose_name=("Cantidad"))
     slug = models.SlugField(max_length=200, unique=True, verbose_name=("Url"))
     active = models.BooleanField(default=True, verbose_name=("Activo"))
+    published = models.BooleanField(default=True, verbose_name=("published"))
     soldout = models.BooleanField(default=False, verbose_name=("Agotado"))
     offer = models.BooleanField(default=False, verbose_name=("Oferta"))
     home = models.BooleanField(default=False, verbose_name=("Exclusivo"))
