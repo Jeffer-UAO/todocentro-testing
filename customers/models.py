@@ -51,10 +51,7 @@ class Product_public(models.Model):
     item = models.UUIDField(editable=False, blank=True, null=True)
     codigo = models.CharField(
         max_length=50, verbose_name=("Código")
-    )
-    domain = models.CharField(
-        max_length=5, null=True, default="", verbose_name=("Dominio")
-    )
+    )   
     name_extend = models.CharField(
         max_length=200, unique=True, verbose_name=("Nombre Producto")
     )
@@ -97,10 +94,9 @@ class Product_public(models.Model):
     )
     domain = models.CharField(max_length=255, blank=True, null=True)
    
-    def setTenant(self, tenant):
-        self.domain = tenant.schema_name
-        self.save()
-
+   # Meta data for SEO and Open Graph protocols    
+    def __str__(self):
+        return f"{self.codigo} - {self.name_extend}"
    
 
  
