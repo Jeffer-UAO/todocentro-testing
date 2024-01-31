@@ -30,7 +30,7 @@ def create_or_update_ipdet(sender, instance, created, **kwargs):
 
             # Actualizar el campo total en el modelo Ip después de guardar un Ipdet
             ip = instance.ip
-            ip.total = ip.ipdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
+            ip.total = ip.orderdet_set.filter(tipo='detalle').aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
             ip.save()
 
     except IntegrityError as e:
