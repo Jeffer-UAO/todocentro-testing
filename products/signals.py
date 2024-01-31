@@ -24,7 +24,7 @@ def sync_producto(sender, instance, **kwargs):
                 'flag' :  instance.flag,
                 'ref' :  instance.ref,
                 'slug' :  instance.slug,
-                'published' :  instance.published,
+                # 'published' :  instance.published,
                 'active' :  instance.active,
                 'soldout' :  instance.soldout,
                 'offer' :  instance.offer,
@@ -48,7 +48,7 @@ def sync_producto(sender, instance, **kwargs):
             product_public.active = instance.active
             product_public.soldout = instance.soldout
             product_public.offer = instance.offer
-            product_public.published = instance.published
+            # product_public.published = instance.published
             product_public.home = instance.home
             product_public.created_date = instance.created_date
             product_public.modified_date = instance.modified_date
