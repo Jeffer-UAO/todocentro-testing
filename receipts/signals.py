@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.db.models import Sum
 from django.db import transaction, IntegrityError
 from django.dispatch import receiver
@@ -30,7 +30,7 @@ def create_or_update_ipdet(sender, instance, created, **kwargs):
 
             # Actualizar el campo total en el modelo Ip después de guardar un Ipdet
             ip = instance.ip
-            ip.total = Ipdet.ipdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
+            ip.total = ip.ipdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
             ip.save()
 
     except IntegrityError as e:
@@ -44,3 +44,20 @@ def create_or_update_ipdet(sender, instance, created, **kwargs):
     except Exception as e:
         transaction.set_rollback(True)
         print(f"Error inesperado (Ipdet): {e}")
+
+
+
+@receiver(post_delete, sender=Ipdet)
+def restar_total(sender, instance, **kwargs):
+    try:
+        with transaction.atomic():
+           
+            ip = instance.ip          
+            ip.total = ip.orderdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
+            ip.save()
+            print(f"Se elminaron productos")
+            
+    except Exception as e:
+        # Manejar cualquier excepción que pueda ocurrir durante la operación
+        transaction.set_rollback(True)
+        print(f"Error inesperado: {e}")
