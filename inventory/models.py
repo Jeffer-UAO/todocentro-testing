@@ -8,6 +8,7 @@ class Itemact(models.Model):
     oedet = models.ForeignKey('bills.Oedet', on_delete=models.CASCADE, null=True, blank=True, default=None)        
     item = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     qty = models.DecimalField(max_digits=9, decimal_places=2, default= 0)
+    qtyorder = models.DecimalField(max_digits=9, decimal_places=2, default= 0)
     tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
     number = models.PositiveIntegerField(editable=False, default=0)
 
@@ -23,6 +24,8 @@ class ItemactItem(models.Model):
     tenant = models.ForeignKey('customers.Client', on_delete=models.CASCADE, blank=True, default="", null=True)
     item = models.ForeignKey('products.Product', on_delete=models.CASCADE, null=True, blank=True, default="")
     cantidad_actual = models.DecimalField(max_digits=9, decimal_places=2, default= 0)
+    qtyorder = models.DecimalField(max_digits=9, decimal_places=2, default= 0)
+    available = models.DecimalField(max_digits=9, decimal_places=2, default= 0.0)
     nombre = models.CharField(max_length=200, blank=True, null=True)
     uuid = models.UUIDField(editable=False, blank=True, null=True)
     images = models.CharField(max_length=600, default="", blank=True)

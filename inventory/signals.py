@@ -15,18 +15,28 @@ def actualizar_cantidades(sender, instance, **kwargs):
             # Obtener el producto relacionado con el movimiento
             item = instance.item
      
+            # Calcular la cantidad actual en Pedidos (Reserva)
+            qtyorder_total = Itemact.objects.filter(item__codigo=item.codigo).aggregate(
+                qtyorder_total=Sum('qtyorder')
+            )['qtyorder_total']
+          
 
-            # Calcular la cantidad actual utilizando agregación
+            # Calcular la cantidad actual utilizando agregación (Stock)
             cantidad_actual = Itemact.objects.filter(item__codigo=item.codigo).aggregate(
                 cantidad_actual=Sum('qty')
             )['cantidad_actual']
 
+
+            # Disponibilidad del producto (stock - reserva)
+            available = cantidad_actual - qtyorder_total
+
             # Actualizar o crear la instancia en ItemactItem
             itemact_item, created = ItemactItem.objects.update_or_create(
-                item=item,
-             
+                item=item,             
                 defaults={
                     'cantidad_actual': cantidad_actual,
+                    'qtyorder' : qtyorder_total,
+                    'availabe' : available,
                     'nombre': item.name_extend,
                     'item': item,
                     'uuid': item.item,
@@ -74,6 +84,12 @@ def restar_cantidades(sender, instance, **kwargs):
             ItemactItem.objects.filter(item__codigo=codigo_producto).update(
                 cantidad_actual=F('cantidad_actual') - instance.qty
             )
+
+            ItemactItem.objects.filter(item__codigo=codigo_producto).update(
+                qtyorder=F('qtyorder_total') - instance.qtyorder
+            )
+
+            # available = cantidad_actual - qtyorder_total
 
             print(f"Cantidad actualizada después de eliminar el movimiento #{instance.pk}")
 

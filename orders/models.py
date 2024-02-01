@@ -51,6 +51,7 @@ class Orderdet(models.Model):
     tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
     number = models.PositiveIntegerField(editable=False, default=0)
     qty = models.DecimalField(max_digits=9, decimal_places=2, blank=False, null=False, default= 1, verbose_name=(u'Cantidad'))
+    qtyorder = models.DecimalField(max_digits=9, decimal_places=2, blank=False, null=False, default= 0)
     price = models.DecimalField(max_digits=12, decimal_places=2, blank=False, null=False, default= 0.0, verbose_name=(u'Precio'))
     subtotal = models.DecimalField(max_digits=22, decimal_places=2, blank=False, null=False, default= 0.0, verbose_name=(u'SubTotal'))
     comments = models.CharField(max_length=100, blank=True, verbose_name=(u'Comentario'))
@@ -62,6 +63,9 @@ class Orderdet(models.Model):
 
         # Calcular el subtotal al multiplicar el costo por la cantidad
         self.subtotal = self.price * self.qty
+
+        # Establecer qtyrem igual a qty (cantidad)
+        self.qtyorder = self.qty
         
         super().save(*args, **kwargs)
     

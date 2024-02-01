@@ -11,11 +11,12 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
     try:      
         with transaction.atomic():
             # Calcula la cantidad para el nuevo Itemact
-            qty = instance.qty * -1
+            # qty = instance.qty * -1
 
             # Si es creado, crea un nuevo Itemact, de lo contrario, actualiza el existente
             itemact, _ = Itemact.objects.get_or_create(orderdet=instance, defaults={
-                'qty': qty,
+                'qty': 0,
+                'qtyorder': instance.qtyorder,
                 'tipo': instance.tipo,
                 'number': instance.number,
                 'item': instance.item
@@ -23,7 +24,8 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
 
             if not created:
                 # Si no es creado, actualiza el Itemact existente
-                itemact.qty = qty
+                itemact.qty = 0
+                itemact.qtyorder = instance.qtyorder
                 itemact.tipo = instance.tipo
                 itemact.number = instance.number
                 itemact.item = instance.item
