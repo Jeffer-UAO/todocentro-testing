@@ -36,7 +36,7 @@ def actualizar_cantidades(sender, instance, **kwargs):
                 defaults={
                     'cantidad_actual': cantidad_actual,
                     'qtyorder' : qtyorder_total,
-                    'availabe' : available,
+                    'available' : available,
                     'nombre': item.name_extend,
                     'item': item,
                     'uuid': item.item,
