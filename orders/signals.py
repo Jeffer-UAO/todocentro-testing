@@ -1,5 +1,5 @@
 from django.db import transaction, IntegrityError
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.db.models import Sum
 from .models import Orderdet 
@@ -30,12 +30,10 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
                 itemact.save()
 
             # Actualiza el campo total en el modelo Order después de guardar un Orderdet
-            order = instance.order
-            order_total_before = order.total  # Guarda el valor antes de la actualización
+            order = instance.order          
             order.total = order.orderdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
             order.save()
-            print(f"Order #{order.pk} - Total antes: {order_total_before}, Total después: {order.total}")
-
+         
 
     except IntegrityError as e:
         transaction.set_rollback(True)
@@ -48,3 +46,19 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
     except Exception as e:
         transaction.set_rollback(True)
         print(f"Error inesperado (Itemact): {e}")
+
+
+
+@receiver(pre_delete, sender=Itemact)
+def restar_total(sender, instance, **kwargs):
+    try:
+        with transaction.atomic():
+           
+            order = instance.order          
+            order.total = order.orderdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
+            order.save()
+            
+    except Exception as e:
+        # Manejar cualquier excepción que pueda ocurrir durante la operación
+        transaction.set_rollback(True)
+        print(f"Error inesperado: {e}")
