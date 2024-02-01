@@ -84,7 +84,7 @@ def restar_cantidades(sender, instance, **kwargs):
             ItemactItem.objects.filter(item__codigo=codigo_producto).update(
                 cantidad_actual=F('cantidad_actual') - instance.qty,
                 qtyorder=F('qtyorder') - instance.qtyorder,
-                available=F('cantidad_actual') - F('qtyorder') - instance.qtyorder
+                available=F('available') + instance.qtyorder
             )
 
             print(f"Cantidad actualizada después de eliminar el movimiento #{instance.pk}")
