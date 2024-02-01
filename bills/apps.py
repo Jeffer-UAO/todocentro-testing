@@ -6,5 +6,5 @@ class BillsConfig(AppConfig):
     name = 'bills'
     verbose_name = 'Administración de Factura'
 
-    # def ready(self):
-    #         import orders.signals 
+    def ready(self):
+            import bills.signals 
