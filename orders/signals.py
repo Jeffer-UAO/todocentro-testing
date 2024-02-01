@@ -49,7 +49,7 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
 
 
 
-@receiver(pre_delete, sender=Itemact)
+@receiver(pre_delete, sender=Orderdet)
 def restar_total(sender, instance, **kwargs):
     try:
         with transaction.atomic():
