@@ -48,3 +48,18 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
         transaction.set_rollback(True)
         print(f"Error inesperado (Itemact): {e}")
 
+
+
+@receiver(post_delete, sender=Orderdet)
+def restar_total(sender, instance, **kwargs):
+    try:
+        with transaction.atomic():
+           
+            order = instance.order          
+            order.total = order.orderdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
+            order.save()
+            
+    except Exception as e:
+        # Manejar cualquier excepción que pueda ocurrir durante la operación
+        transaction.set_rollback(True)
+        print(f"Error inesperado: {e}")
