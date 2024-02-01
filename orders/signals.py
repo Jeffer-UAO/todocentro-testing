@@ -1,5 +1,5 @@
 from django.db import transaction, IntegrityError
-from django.db.models.signals import post_save, pre_delete
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.db.models import Sum
 from .models import Orderdet 
@@ -7,6 +7,7 @@ from inventory.models import Itemact
 
 
 @receiver(post_save, sender=Orderdet)
+@receiver(post_delete, sender=Orderdet)
 def create_or_update_itemact(sender, instance, created, **kwargs):
     try:      
         with transaction.atomic():
@@ -47,18 +48,3 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
         transaction.set_rollback(True)
         print(f"Error inesperado (Itemact): {e}")
 
-
-
-@receiver(pre_delete, sender=Orderdet)
-def restar_total(sender, instance, **kwargs):
-    try:
-        with transaction.atomic():
-           
-            order = instance.order          
-            order.total = order.orderdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
-            order.save()
-            
-    except Exception as e:
-        # Manejar cualquier excepción que pueda ocurrir durante la operación
-        transaction.set_rollback(True)
-        print(f"Error inesperado: {e}")
