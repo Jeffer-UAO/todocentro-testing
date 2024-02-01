@@ -40,8 +40,8 @@ class ItemactItem(models.Model):
     tenant = models.ForeignKey('customers.Client', on_delete=models.CASCADE, blank=True, default="", null=True)
 
     class Meta:
-        verbose_name = "Control inventario"
-        verbose_name_plural = "Control inventario"
+        verbose_name = "Administración de Entrada"
+        verbose_name_plural = "Administración de Entradas"
 
     
     def __str__(self):
