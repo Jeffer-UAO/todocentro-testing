@@ -5,6 +5,7 @@ from django_tenants.utils import get_public_schema_name, schema_exists, get_tena
 class Itemact(models.Model):   
     ipdet = models.ForeignKey('receipts.Ipdet', on_delete=models.CASCADE, null=True, blank=True, default=None)        
     orderdet = models.ForeignKey('orders.Orderdet', on_delete=models.CASCADE, null=True, blank=True, default=None)        
+    oedet = models.ForeignKey('bills.Oedet', on_delete=models.CASCADE, null=True, blank=True, default=None)        
     item = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     qty = models.DecimalField(max_digits=9, decimal_places=2, default= 0)
     tipo = models.CharField(editable=False, max_length=20, null=True, blank=True)
@@ -19,6 +20,7 @@ class Itemact(models.Model):
 
 
 class ItemactItem(models.Model):   
+    tenant = models.ForeignKey('customers.Client', on_delete=models.CASCADE, blank=True, default="", null=True)
     item = models.ForeignKey('products.Product', on_delete=models.CASCADE, null=True, blank=True, default="")
     cantidad_actual = models.DecimalField(max_digits=9, decimal_places=2, default= 0)
     nombre = models.CharField(max_length=200, blank=True, null=True)
@@ -37,7 +39,6 @@ class ItemactItem(models.Model):
     soldout = models.CharField(max_length=5, blank=True, default="")
     offer = models.CharField(max_length=5, blank=True, default="")
     home = models.CharField(max_length=5, blank=True, default="")
-    tenant = models.ForeignKey('customers.Client', on_delete=models.CASCADE, blank=True, default="", null=True)
 
     class Meta:
         verbose_name = "Administración de Entrada"

@@ -5,7 +5,7 @@ from .models import Ip, Ipdet
 class IpdetInline(admin.TabularInline):
     model = Ipdet
     readonly_fields = ('subtotal',)
-    extra = 1  # Puedes ajustar esto según tus necesidades
+    extra = 0  # Puedes ajustar esto según tus necesidades
 
 
 class IpAdmin(admin.ModelAdmin):    
