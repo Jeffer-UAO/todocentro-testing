@@ -53,7 +53,7 @@ def restar_total(sender, instance, **kwargs):
         with transaction.atomic():
            
             ip = instance.ip          
-            ip.total = ip.orderdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
+            ip.total = ip.ipdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
             ip.save()
             print(f"Se elminaron productos")
             
