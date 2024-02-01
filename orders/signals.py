@@ -7,7 +7,6 @@ from inventory.models import Itemact
 
 
 @receiver(post_save, sender=Orderdet)
-@receiver(post_delete, sender=Orderdet)
 def create_or_update_itemact(sender, instance, created, **kwargs):
     try:      
         with transaction.atomic():
@@ -58,6 +57,7 @@ def restar_total(sender, instance, **kwargs):
             order = instance.order          
             order.total = order.orderdet_set.aggregate(Sum('subtotal'))['subtotal__sum'] or 0.00
             order.save()
+            print(f"Se elminaron productos")
             
     except Exception as e:
         # Manejar cualquier excepción que pueda ocurrir durante la operación
