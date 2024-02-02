@@ -1,10 +1,10 @@
-from django.db.models import F
+from django.db.models import F, Value, Case, When
 from django.db.models.signals import post_save, pre_delete
 from django.db.models import Sum
-from django.db import transaction, IntegrityError
+from django.db import transaction
 from django.dispatch import receiver
 from inventory.models import Itemact, ItemactItem
-
+from django.db.models.functions import Coalesce
 
 
 
@@ -83,8 +83,15 @@ def restar_cantidades(sender, instance, **kwargs):
             # Restar la cantidad actual en ItemactItem
             ItemactItem.objects.filter(item__codigo=codigo_producto).update(
                 cantidad_actual=F('cantidad_actual') - instance.qty,
-                qtyorder=F('qtyorder') - instance.qtyorder,
-                available=F('available') + instance.qtyorder
+                qtyorder=Coalesce(F('qtyorder') - instance.qtyorder, Value(0)),
+                available=(
+                    F('available') + Coalesce(F('qtyorder'), Value(0)) - 
+                    Case(
+                        When(instance.qty > 0, then=F('qty')),
+                        When(instance.qty < 0, then=-F('qty')),
+                        default=F('qtyorder')
+                    )
+                )
             )
 
             print(f"Cantidad actualizada después de eliminar el movimiento #{instance.pk}")

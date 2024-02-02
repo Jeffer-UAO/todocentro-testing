@@ -18,10 +18,11 @@ def create_or_update_ipdet(sender, instance, created, **kwargs):
                 'tipo': instance.tipo,
                 'number': instance.number,
                 'item': instance.item
+               
             })
 
+            # Si no es creado, actualiza el itemact existente
             if not created:
-                # Si no es creado, actualiza el itemact existente
                 itemact.qty = instance.qty
                 itemact.tipo = instance.tipo
                 itemact.number = instance.number

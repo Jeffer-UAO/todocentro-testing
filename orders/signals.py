@@ -9,9 +9,7 @@ from inventory.models import Itemact
 @receiver(post_save, sender=Orderdet)
 def create_or_update_itemact(sender, instance, created, **kwargs):
     try:      
-        with transaction.atomic():
-            # Calcula la cantidad para el nuevo Itemact
-            # qty = instance.qty * -1
+        with transaction.atomic():          
 
             # Si es creado, crea un nuevo Itemact, de lo contrario, actualiza el existente
             itemact, _ = Itemact.objects.get_or_create(orderdet=instance, defaults={
@@ -22,8 +20,8 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
                 'item': instance.item
             })
 
+            # Si no es creado, actualiza el Itemact existente
             if not created:
-                # Si no es creado, actualiza el Itemact existente
                 itemact.qty = 0
                 itemact.qtyorder = instance.qtyorder
                 itemact.tipo = instance.tipo
