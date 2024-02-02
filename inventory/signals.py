@@ -92,12 +92,12 @@ def restar_cantidades(sender, instance, **kwargs):
                 )
             
             if instance.qtyorder > 0:
+                print(f'qtyorder = {instance.qtyorder}')
                 ItemactItem.objects.filter(item__codigo=codigo_producto).update(
                     cantidad_actual = F('cantidad_actual') - instance.qty,
                     qtyorder=F('qtyorder') + instance.qty,
                     available = F('available') - instance.qty                
-                    print(f'qtyorder = {instance.qtyorder}')
-             )
+                )
                                  
                 
 
