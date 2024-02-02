@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Oe, Oedet, Orderdet
+from .models import Oe, Oedet
+from orders.models import Orderdet
 
 
 class OrderdetInline(admin.TabularInline):
