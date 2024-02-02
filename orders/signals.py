@@ -13,7 +13,7 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
 
             # Si es creado, crea un nuevo Itemact, de lo contrario, actualiza el existente
             itemact, _ = Itemact.objects.get_or_create(orderdet=instance, defaults={
-                'qty': 0,
+                'qty': instance.qty,
                 'qtyorder': instance.qtyorder,
                 'tipo': instance.tipo,
                 'number': instance.number,
@@ -22,7 +22,7 @@ def create_or_update_itemact(sender, instance, created, **kwargs):
 
             # Si no es creado, actualiza el Itemact existente
             if not created:
-                itemact.qty = 0
+                itemact.qty = instance.qty
                 itemact.qtyorder = instance.qtyorder
                 itemact.tipo = instance.tipo
                 itemact.number = instance.number
