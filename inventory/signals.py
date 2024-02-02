@@ -88,9 +88,9 @@ def restar_cantidades(sender, instance, **kwargs):
                 available=Case(
                     When(instance.qty > 0, then=F('available') - instance.qty),
                     When(instance.qty < 0, then=F('available') + instance.qty),
-                    When(instance.qty == 0, then=F('available') + instance.qtyorder),
-                    output_field=IntegerField()
-                )
+                    default=F('available') + instance.qtyorder,
+                    output_field=IntegerField(),
+                )               
             )
 
             print(f"Cantidad actualizada después de eliminar el movimiento #{instance.pk}")
