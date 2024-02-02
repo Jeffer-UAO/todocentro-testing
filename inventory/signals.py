@@ -85,13 +85,24 @@ def restar_cantidades(sender, instance, **kwargs):
             # Controla las cantidades en itemactitem cuando se elimina un registro
             # (cantidad_actual, available, qtyorder)
 
-            ItemactItem.objects.filter(item__codigo=codigo_producto).update(
+            if instance.qtyorder == 0:
+                ItemactItem.objects.filter(item__codigo=codigo_producto).update(
+                    cantidad_actual = F('cantidad_actual') - instance.qty,                   
+                    available = F('available') - instance.qty                
+                )
+            
+            if instance.qtyorder > 0:
+                ItemactItem.objects.filter(item__codigo=codigo_producto).update(
                     cantidad_actual = F('cantidad_actual') - instance.qty,
                     qtyorder=F('qtyorder') + instance.qty,
                     available = F('available') - instance.qty                
+                    print(f'qtyorder = {instance.qtyorder}')
              )
+                                 
                 
 
+                # raise ValueError("No se puede eliminar este elemento porque hay pedidos pendientes 
+                #                  de este artículo.") 
             # if instance.qty > 0:
             #     ItemactItem.objects.filter(item__codigo=codigo_producto).update(
             #         cantidad_actual = F('cantidad_actual') - instance.qty,
