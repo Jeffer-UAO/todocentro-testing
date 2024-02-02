@@ -1,4 +1,4 @@
-from django.db.models import F, Value, Case, When
+from django.db.models import F, Value, Case, When, IntegerField
 from django.db.models.signals import post_save, pre_delete
 from django.db.models import Sum
 from django.db import transaction
@@ -80,17 +80,16 @@ def restar_cantidades(sender, instance, **kwargs):
             # Obtener el código del producto relacionado con el movimiento
             codigo_producto = instance.item.codigo
 
-            # Restar la cantidad actual en ItemactItem
+            # Controla las cantidades en itemactitem cuando se elimina un registro
+            # (cantidad_actual, available, qtyorder)
             ItemactItem.objects.filter(item__codigo=codigo_producto).update(
                 cantidad_actual=F('cantidad_actual') - instance.qty,
                 qtyorder=Coalesce(F('qtyorder') - instance.qtyorder, Value(0)),
-                available=(
-                    F('available') + Coalesce(F('qtyorder'), Value(0)) - 
-                    Case(
-                        When(instance.qty > 0, then=F('qty')),
-                        When(instance.qty < 0, then=-F('qty')),
-                        default=F('qtyorder')
-                    )
+                available=Case(
+                    When(instance.qty > 0, then=F('available') - instance.qty),
+                    When(instance.qty < 0, then=F('available') + instance.qty),
+                    When(instance.qty == 0, then=F('available') + instance.qtyorder),
+                    output_field=IntegerField()
                 )
             )
 
