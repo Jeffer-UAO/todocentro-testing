@@ -27,8 +27,10 @@ def actualizar_cantidades(sender, instance, **kwargs):
             )['cantidad_actual']
 
 
+
             # Disponibilidad del producto (stock - reserva)
-            available = cantidad_actual - qtyorder_total
+            available = cantidad_actual
+            # available = cantidad_actual - qtyorder_total
 
             # Actualizar o crear la instancia en ItemactItem
             itemact_item, created = ItemactItem.objects.update_or_create(
@@ -95,6 +97,7 @@ def restar_cantidades(sender, instance, **kwargs):
                 )
             if instance.qty == 0:
                 ItemactItem.objects.filter(item__codigo=codigo_producto).update(
+                    cantidad_actual = F('cantidad_actual') - instance.qty,
                     qtyorder=Coalesce(F('qtyorder') - instance.qtyorder, Value(0)),
                     available = F('available') + instance.qtyorder                
                 )
