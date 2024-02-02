@@ -1,6 +1,10 @@
 from django.contrib import admin
-from .models import Oe, Oedet
+from .models import Oe, Oedet, Orderdet
 
+
+class OrderdetInline(admin.TabularInline):
+    model = Orderdet
+    extra = 1
 
 class OedetInline(admin.TabularInline):
     model = Oedet
@@ -13,7 +17,7 @@ class OeAdmin(admin.ModelAdmin):
     list_display_links = ('tipo', 'number', 'total', 'created_date')
     search_fields = ('number','created_data',)
     readonly_fields = ('total',)
-    inlines = [OedetInline]    
+    inlines = [OedetInline, OrderdetInline]    
     list_per_page = 6
     
 admin.site.register(Oe, OeAdmin)

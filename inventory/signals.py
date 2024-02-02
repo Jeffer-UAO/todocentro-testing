@@ -98,8 +98,6 @@ def restar_cantidades(sender, instance, **kwargs):
                     qtyorder=Coalesce(F('qtyorder') - instance.qtyorder, Value(0)),
                     available = F('available') + instance.qtyorder                
                 )
-           
-           
 
             print(f"Cantidad actualizada después de eliminar el movimiento #{instance.pk}")
             # order_total = F('qtyorder') + F('qtypurchase')  # Sum
