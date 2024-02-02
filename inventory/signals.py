@@ -82,16 +82,24 @@ def restar_cantidades(sender, instance, **kwargs):
 
             # Controla las cantidades en itemactitem cuando se elimina un registro
             # (cantidad_actual, available, qtyorder)
-            ItemactItem.objects.filter(item__codigo=codigo_producto).update(
-                cantidad_actual=F('cantidad_actual') - instance.qty,
-                qtyorder=Coalesce(F('qtyorder') - instance.qtyorder, Value(0)),
-                available=Case(
-                    When(instance.qty > 0, then=F('available') - instance.qty),
-                    When(instance.qty < 0, then=F('available') + instance.qty),
-                    default=F('available') + instance.qtyorder,
-                    output_field=IntegerField(),
-                )               
-            )
+
+            if instance.qty > 0:
+                ItemactItem.objects.filter(item__codigo=codigo_producto).update(
+                    cantidad_actual = F('cantidad_actual') - instance.qty,
+                    available = F('available') - instance.qty                
+                )
+            if instance.qty < 0:
+                ItemactItem.objects.filter(item__codigo=codigo_producto).update(
+                    cantidad_actual = F('cantidad_actual') + instance.qty,
+                    available = F('available') + instance.qty                
+                )
+            if instance.qty == 0:
+                ItemactItem.objects.filter(item__codigo=codigo_producto).update(
+                    qtyorder=Coalesce(F('qtyorder') - instance.qtyorder, Value(0)),
+                    available = F('available') + instance.qtyorder                
+                )
+           
+           
 
             print(f"Cantidad actualizada después de eliminar el movimiento #{instance.pk}")
             # order_total = F('qtyorder') + F('qtypurchase')  # Sum
