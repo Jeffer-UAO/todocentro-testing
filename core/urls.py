@@ -13,6 +13,8 @@ from products.api.router import router_product_category
 from products.api.router import router_product
 from products.api.router import router_productOE
 from products.api.router import router_category
+from orders.api.router import router_ordere
+from orders.api.router import router_orderdet
 from warehome.api.router import router_out
 from warehome.api.router import router_stock
 from warehome.api.router import router_warehomedetail
@@ -55,10 +57,13 @@ urlpatterns = [
     path('api/', include(router_out.urls)),
     path('api/', include(router_stock.urls)),
     path('api/', include(router_user.urls)),
+    path('api/', include(router_ordere.urls)),
+    path('api/', include(router_orderdet.urls)),
+    path('api/', include(router_category.urls)),
     path('api/', include(router_product.urls)),
     path('api/', include(router_productOE.urls)),
-    path('api/', include(router_gallery.urls)),
     path('api/', include(router_product_category.urls)),
+    path('api/', include(router_gallery.urls)),
     path('api/', include(router_cart.urls)),
     path('api/', include(router_order.urls)),
     path('api/', include(router_warehomedetail.urls)),
