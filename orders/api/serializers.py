@@ -10,7 +10,7 @@ class OrderdetSerializer(ModelSerializer):
 
 
 class OrderSerializer(ModelSerializer):
-    orderdetData = OrderdetSerializer(source='number', read_only=True, many=True)
+    orderdetData = OrderdetSerializer(source='id', read_only=True, many=True)
     class Meta:
         model = Order
         fields = ["number", "cust", "tipo", "total", "created_date", "concept", "orderdetData"]
