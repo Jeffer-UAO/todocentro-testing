@@ -7,7 +7,7 @@ from rest_framework import serializers
 class OrderdetSerializer(ModelSerializer):
     class Meta:
         model = Orderdet
-        fields = ["comments", "price", "qty"]
+        fields = ["comments", "price", "qty", "item"]
 
 
 class OrderSerializer(serializers.ModelSerializer):
