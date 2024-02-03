@@ -11,5 +11,5 @@ class OrderSerializer(ModelSerializer):
 class OrderdetSerializer(ModelSerializer):
     class Meta:
         model = Orderdet
-        fields = ["concept", "price", "qty", "item"]
+        fields = ["comments", "price", "qty", "item"]
     
