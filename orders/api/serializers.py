@@ -6,7 +6,7 @@ from ..models import Order, Orderdet
 class OrderdetSerializer(ModelSerializer):
     class Meta:
         model = Orderdet
-        fields = ["comments", "price", "qty", "item"]
+        fields = ["comments", "price", "qty"]
 
 
 class OrderSerializer(ModelSerializer):
